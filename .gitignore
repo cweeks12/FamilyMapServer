@@ -3,3 +3,6 @@
 
 # Compiled class files
 *.class
+
+# Whatever this is
+**/.DS_Store
