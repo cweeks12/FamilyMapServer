@@ -20,6 +20,20 @@ public class Location{
     /** Longitude of the location */
     private String longitude;
 
+    /** Constructor that builds a location based on a JSON string. 
+     *
+     * @param jsonString A JSON string that contains the information for Location.
+     */
+
+    public Location(String jsonString){
+    }
+
+    /*
+     *
+     * GETTERS AND SETTERS
+     *
+     */
+
     public String getCountry(){
         return country;
     }

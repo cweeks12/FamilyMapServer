@@ -30,4 +30,28 @@ public class RegisterRequest{
     
     public RegisterRequest(String jsonString){
     }
+
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public String getFirstName(){
+        return firstName;
+    }
+
+    public String getLastName(){
+        return lastName;
+    }
+
+    public String getGender(){
+        return gender;
+    }
 }

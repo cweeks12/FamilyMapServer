@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class EventsResponse{
 
     /** Array of Event objects to load in. */
-    List<Event> data;
+    List<EventResponse> data;
 
     /**
      * Constructor that creates the object to return in response to the GET request.

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Stores and generates locations for family generation
+ * Stores and generates locations for family generation.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
  * @version 1.0
@@ -26,13 +26,23 @@ public class LocationGenerator{
     }
     
 
-    /** Gets a random location to use. This is to help generate random family data 
+    /** Gets a random location to use. This is to help generate random family data.
      *
      * @return Location randomly selected.
      */
 
-    Location getRandomLocation(){
-        return new Location();
+    public Location getRandomLocation(){
+        return null;
+    }
+
+    /** Gets a nearby location to use. This helps generate realistic family data.
+     *
+     * @param loc A location that you want to find a nearby location to.
+     * @return Location near or equal to the location passed in.
+     */
+
+    public Location getNearbyLocation(Location loc){
+        return null;
     }
     
 }

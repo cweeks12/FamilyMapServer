@@ -1,6 +1,6 @@
 package familyserver;
 
-/** Class that holds everything for a login request. */
+/** Class that holds everything for a response containing only a message. */
 
 public class MessageResponse{
 
@@ -14,5 +14,6 @@ public class MessageResponse{
      */
     
     public MessageResponse(String response){
+        message = response;
     }
 }

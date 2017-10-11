@@ -24,4 +24,16 @@ public class LoadRequest{
     
     public LoadRequest(String jsonString){
     }
+
+    public List<User> getUsers(){
+        return users;
+    }
+
+    public List<Person> getPersons(){
+        return persons;
+    }
+
+    public List<Event> getEvents(){
+        return events;
+    }
 }

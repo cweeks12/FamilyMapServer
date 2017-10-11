@@ -1,6 +1,6 @@
 package familyserver;
 
-/** Class that holds everything for a login request. */
+/** Class that holds everything for a login request. It only has getters because it's reading a request.*/
 
 public class LoginRequest{
 
@@ -16,5 +16,13 @@ public class LoginRequest{
      */
     
     public LoginRequest(String jsonString){
+    }
+
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getPassword(){
+        return password;
     }
 }

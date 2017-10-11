@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PeopleResponse{
 
     /** Array of Person objects to load in. */
-    List<Person> data;
+    List<PersonResponse> data;
 
     /**
      * Constructor that creates the object to return in response to the GET request.
