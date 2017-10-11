@@ -32,6 +32,7 @@ public class LocationGenerator{
      */
 
     Location getRandomLocation(){
+        return new Location();
     }
     
 }

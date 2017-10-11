@@ -32,6 +32,7 @@ public class NameGenerator{
      */
 
     public String getRandomName(){
+        return null;
     }
 
 }
