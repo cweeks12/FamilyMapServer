@@ -1,5 +1,7 @@
 package familyserver;
 
+import java.sql.ResultSet;
+
 /**
  * Contains all information about events
  *
@@ -21,6 +23,16 @@ public class Event{
     private String eventType;
     /** The event's year */
     private int year;
+
+
+    /**
+     * Constructs an event from an SQL query.
+     *
+     * @param rs The SQL query that contains information about the Event.
+     */
+
+    public Event(ResultSet rs){
+    }
 
     /*
      *

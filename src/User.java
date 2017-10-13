@@ -1,5 +1,7 @@
 package familyserver;
 
+import java.sql.ResultSet;
+
 /** 
  * Contains all information about one user.
  *
@@ -29,6 +31,17 @@ public class User{
 
     /** The user's unique id number. */
     private String id;
+
+
+    /** 
+     * Creates a user based on an sql query.
+     *
+     * @param rs An sql result set that you create the user from.
+     */
+
+    public User(ResultSet rs){
+    }
+
 
     /*
      *

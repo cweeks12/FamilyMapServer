@@ -1,5 +1,7 @@
 package familyserver;
 
+import java.sql.ResultSet;
+
 /**
  * Contains all information about one authentication token.
  *
@@ -17,6 +19,11 @@ public class AuthToken{
 
     /** Time the token expires. Should be one hour after initial login */
     private int expireTime;
+
+
+    /** Constructs an AuthToken based on an sql result set.*/
+    public AuthToken(ResultSet rs){
+    }
 
     /*
      *

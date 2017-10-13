@@ -1,5 +1,7 @@
 package familyserver;
 
+import java.sql.ResultSet;
+
 /**
  * Contains all information about one person.
  *
@@ -31,6 +33,15 @@ public class Person{
 
     /** ID of person's spouse */
     private String spouse;
+
+
+    /** Constructs a Person based on a database query.
+     *
+     * @param rs SQL result set to build the person from.
+     */
+
+    public Person(ResultSet rs){
+    }
 
     /*
      *
