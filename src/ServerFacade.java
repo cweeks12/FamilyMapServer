@@ -13,22 +13,22 @@ public class ServerFacade{
     /**
      * Registers a new user in the database.
      *
-     * @param req Contains the information needed to register a new user.
+     * @param request Contains the information needed to register a new user.
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse register(RegisterRequest req){
+    public LoginResponse register(RegisterRequest request){
     }
 
 
     /**
      * Performs a login and returns a response.
      *
-     * @param req Contains the information needed to login.
+     * @param request Contains the information needed to login.
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse login(LoginRequest req){
+    public LoginResponse login(LoginRequest request){
     }
 
 
@@ -57,21 +57,55 @@ public class ServerFacade{
     /**
      * Fills the database with the given family information.
      *
-     * @param req A LoadRequest with all the data to add into the database.
+     * @param request A LoadRequest with all the data to add into the database.
      * @return A message response telling whether or not the request worked.
      */
 
-    public MessageResponse load(LoadRequest req){
+    public MessageResponse load(LoadRequest request){
     }
+
+
+    /**
+     * Finds the person associated with the personId and sends the information back.
+     *
+     * @param token The authorization token used to request the data.
+     * @param personId The ID of the person you're searching for.
+     * @return A PersonResponse object with the requested person's information in it.
+     */
 
     public PersonResponse person(AuthToken token, String personId){
     }
 
+
+    /**
+     * Finds all people associated with the user indicated by the authentication token.
+     *
+     * @param token The authentication token from the user requesting.
+     * @return A PeopleResponse object with all of the data of all of the people associated with the requesting user.
+     */
+
     public PeopleResponse people(AuthToken token){
     }
 
+
+    /**
+     * Finds the event associated with the eventId and sends the information back.
+     *
+     * @param token The authorization token used to request the data.
+     * @param eventId The ID of the event you're searching for.
+     * @return An EventResponse object with the requested event's information in it.
+     */
+
     public EventResponse event(AuthToken token, String eventId){
     }
+
+
+    /**
+     * Finds all events associated with the user indicated by the authentication token.
+     *
+     * @param token The authentication token from the user requesting.
+     * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
+     */
 
     public EventsResponse events(AuthToken token){
     }
