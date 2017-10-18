@@ -6,3 +6,9 @@
 
 # Don't commit the docs. If you want those, just generate them yourself.
 docs/*
+
+# Vim swap files
+*.sw*
+
+#Tags files
+**/tags

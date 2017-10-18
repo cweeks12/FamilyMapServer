@@ -1,6 +1,7 @@
 package familyserver;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /** 
  * Contains all information about one user.
@@ -40,8 +41,36 @@ public class User{
      */
 
     public User(ResultSet rs){
+        try{
+            this.username = rs.getString("username");
+            this.password = rs.getString("password");
+            this.email = rs.getString("email");
+            this.firstName = rs.getString("firstName");
+            this.lastName = rs.getString("lastName");
+            this.gender = rs.getString("gender");
+            this.id = rs.getString("id");
+        }
+        catch(SQLException e){
+            System.out.println("Error creating User from SQL.");
+        }
     }
 
+    public User( String username,
+                    String password,
+                    String email,
+                    String firstName,
+                    String lastName,
+                    String gender,
+                    String id){
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.id = id;
+    }
 
     /*
      *

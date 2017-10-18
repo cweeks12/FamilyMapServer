@@ -1,6 +1,8 @@
 package familyserver;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 /**
  * Contains all information about one authentication token.
@@ -18,11 +20,28 @@ public class AuthToken{
     private String username;
 
     /** Time the token expires. Should be one hour after initial login */
-    private int expireTime;
+    private long expireTime;
 
 
     /** Constructs an AuthToken based on an sql result set.*/
     public AuthToken(ResultSet rs){
+        try {
+            this.token = rs.getString("authToken");
+            this.username = rs.getString("username");
+            this.expireTime = rs.getLong("expiryTime");
+        }
+        catch (SQLException e){
+            System.out.println("There was an error creating the AuthToken");
+        }
+    }
+
+    /** Constructs an AuthToken given a username and a time until it expires. */
+    public AuthToken(String username, long timeUntilExpiry){
+        this.token = Utils.generateId();
+        this.username = username;
+
+        // Create the timestamp when the token should expire.
+        this.expireTime = (System.currentTimeMillis()/1000) + timeUntilExpiry;
     }
 
     /*
@@ -47,11 +66,11 @@ public class AuthToken{
         this.username = username;
     }
 
-    public int getExpireTime(){
+    public long getExpireTime(){
         return expireTime;
     }
 
-    public void setExpireTime(int expireTime){
+    public void setExpireTime(long expireTime){
         this.expireTime = expireTime;
     }
 }

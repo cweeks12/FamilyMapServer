@@ -1,6 +1,7 @@
 package familyserver;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Contains all information about one person.
@@ -41,7 +42,39 @@ public class Person{
      */
 
     public Person(ResultSet rs){
+        try{
+            this.id = rs.getString("personId");
+            this.descendant = rs.getString("descendant");
+            this.firstName = rs.getString("firstName");
+            this.lastName = rs.getString("lastName");
+            this.gender = rs.getString("gender");
+            this.father = rs.getString("father");
+            this.mother = rs.getString("mother");
+            this.spouse = rs.getString("spouse");
+        }
+        catch (SQLException e){
+            System.out.println("Error building Person object.");
+        }
     }
+
+    public Person(String id, 
+                    String descendant, 
+                    String firstName, 
+                    String lastName, 
+                    String gender, 
+                    String father, 
+                    String mother, 
+                    String spouse){
+
+        this.id = id;
+        this.descendant = descendant;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.father = father;
+        this.mother = mother;
+        this.spouse = spouse;
+    } 
 
     /*
      *

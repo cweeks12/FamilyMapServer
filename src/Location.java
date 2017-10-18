@@ -1,6 +1,6 @@
 package familyserver;
 
-/** 
+/**
  * Holds location information.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
@@ -15,17 +15,24 @@ public class Location{
     private String city;
 
     /** Latitude of the location */
-    private String latitude;
+    private float latitude;
 
     /** Longitude of the location */
-    private String longitude;
+    private float longitude;
 
-    /** Constructor that builds a location based on a JSON string. 
+    /** Constructor that builds a location based on a JSON string.
      *
      * @param jsonString A JSON string that contains the information for Location.
      */
 
     public Location(String jsonString){
+    }
+
+    public Location(String country, String city, float latitude, float longitude){
+        this.country = country;
+        this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     /*
@@ -50,19 +57,19 @@ public class Location{
         this.city = city;
     }
 
-    public String getLatitude(){
+    public float getLatitude(){
         return latitude;
     }
 
-    public void setLatitude(String latitude){
+    public void setLatitude(float latitude){
         this.latitude = latitude;
     }
 
-    public String getLongitude(){
+    public float getLongitude(){
         return longitude;
     }
 
-    public void setLongitude(String longitude){
+    public void setLongitude(float longitude){
         this.longitude = longitude;
     }
 

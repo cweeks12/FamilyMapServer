@@ -34,6 +34,15 @@ public class Event{
     public Event(ResultSet rs){
     }
 
+    public Event(String id, String username, String personId, Location eventLocation, String eventType, int year){
+        this.id = id;
+        this.username = username;
+        this.personId = personId;
+        this.eventLocation = eventLocation;
+        this.eventType = eventType;
+        this.year = year;
+    }
+
     /*
      *
      * GETTERS AND SETTERS
