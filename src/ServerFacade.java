@@ -18,6 +18,7 @@ public class ServerFacade{
      */
 
     public LoginResponse register(RegisterRequest request){
+        return null;
     }
 
 
@@ -29,6 +30,7 @@ public class ServerFacade{
      */
 
     public LoginResponse login(LoginRequest request){
+        return null;
     }
 
 
@@ -39,6 +41,7 @@ public class ServerFacade{
      */
 
     public MessageResponse clear(){
+        return null;
     }
 
 
@@ -51,6 +54,7 @@ public class ServerFacade{
      */
 
     public MessageResponse fill(String username, int generations){
+        return null;
     }
 
 
@@ -62,6 +66,7 @@ public class ServerFacade{
      */
 
     public MessageResponse load(LoadRequest request){
+        return null;
     }
 
 
@@ -74,6 +79,7 @@ public class ServerFacade{
      */
 
     public PersonResponse person(AuthToken token, String personId){
+        return null;
     }
 
 
@@ -85,6 +91,7 @@ public class ServerFacade{
      */
 
     public PeopleResponse people(AuthToken token){
+        return null;
     }
 
 
@@ -97,17 +104,19 @@ public class ServerFacade{
      */
 
     public EventResponse event(AuthToken token, String eventId){
+        return null;
     }
 
 
-    /**
-     * Finds all events associated with the user indicated by the authentication token.
-     *
-     * @param token The authentication token from the user requesting.
-     * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
-     */
+-    /**
+-     * Finds all events associated with the user indicated by the authentication token.
+-     *
+-     * @param token The authentication token from the user requesting.
+-     * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
+-     */
 
     public EventsResponse events(AuthToken token){
+        return null;
     }
 
 } 
