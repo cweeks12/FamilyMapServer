@@ -1,0 +1,26 @@
+
+COMMAND=$1
+
+# Compilation command
+if [ "$COMMAND" == compile ]
+then
+    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar src/*
+fi
+
+# Run command
+if [ "$COMMAND" == run ]
+then
+    echo Run
+fi
+
+# Compile Tests command
+if [ "$COMMAND" == compile-tests ]
+then
+    echo Compile tests
+fi
+
+# Run Tests command
+if [ "$COMMAND" == run-tests ]
+then
+    echo Run tests
+fi

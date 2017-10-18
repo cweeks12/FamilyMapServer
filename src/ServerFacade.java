@@ -1,8 +1,8 @@
 package familyserver;
 
 
-/** 
- * Interface for the server to interact with everything in the 
+/**
+ * Interface for the server to interact with everything in the
  * server and database.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
@@ -108,16 +108,15 @@ public class ServerFacade{
         return null;
     }
 
-
--    /**
--     * Finds all events associated with the user indicated by the authentication token.
--     *
--     * @param token The authentication token from the user requesting.
--     * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
--     */
+    /**
+     * Finds all events associated with the user indicated by the authentication token.
+     *
+     * @param token The authentication token from the user requesting.
+     * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
+     */
 
     public EventsResponse events(AuthToken token){
         return null;
     }
 
-} 
+}
