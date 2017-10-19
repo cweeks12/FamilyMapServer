@@ -1,5 +1,6 @@
 package familyserver;
 
+import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -36,6 +37,39 @@ public class Person{
     private String spouse;
 
 
+    /** Override equals method.
+     *
+     * @param o Object that is being compared.
+     * @return Whether or not the person is the same, based on ID
+     */
+
+    @Override 
+    public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+        if (this.getClass() != o.getClass()){
+            return false;
+        }
+
+        Person p = (Person) o;
+
+        return this.id == p.getId() && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("ID: " + id);
+        sb.append(" Desc: " + descendant);
+        sb.append(" Name: " + firstName + " " + lastName);
+        sb.append(" Gender: " + gender);
+
+        return sb.toString();
+    }
+
+
     /** Constructs a Person based on a database query.
      *
      * @param rs SQL result set to build the person from.
@@ -64,7 +98,15 @@ public class Person{
                     String gender, 
                     String father, 
                     String mother, 
-                    String spouse){
+                    String spouse) throws IllegalArgumentException{
+
+        if (!(gender.equals("F") || gender.equals("M"))){
+            throw new IllegalArgumentException();
+        }
+
+        if (id == null || descendant == null || firstName == null || lastName == null || gender == null){
+            throw new IllegalArgumentException();
+        }
 
         this.id = id;
         this.descendant = descendant;
@@ -86,7 +128,10 @@ public class Person{
         return id;
     }
 
-    public void setId(String id){
+    public void setId(String id) throws IllegalArgumentException{
+        if (id == null){
+            throw new IllegalArgumentException();
+        }
         this.id = id;
     }
 
@@ -94,7 +139,10 @@ public class Person{
         return descendant;
     }
 
-    public void setDescendant(String descendant){
+    public void setDescendant(String descendant) throws IllegalArgumentException{
+        if (descendant == null){
+            throw new IllegalArgumentException();
+        }
         this.descendant = descendant;
     }
 
@@ -102,21 +150,30 @@ public class Person{
         return firstName;
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) throws IllegalArgumentException{
+        if (firstName == null){
+            throw new IllegalArgumentException();
+        }
         this.firstName = firstName;
     }
     public String getLastName(){
         return lastName;
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) throws IllegalArgumentException{
+        if (lastName == null){
+            throw new IllegalArgumentException();
+        }
         this.lastName = lastName;
     }
     public String getGender(){
         return gender;
     }
 
-    public void setGender(String gender){
+    public void setGender(String gender) throws IllegalArgumentException{
+        if (gender == null || !(gender.equals("F") || gender.equals("M"))){
+            throw new IllegalArgumentException();
+        }
         this.gender = gender;
     }
     public String getFather(){

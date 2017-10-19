@@ -46,7 +46,7 @@ public class PersonDataAccess{
      * @return The ID of the new person added.
      */
 
-    public String createNewPerson(Person personToCreate){
+    public String createNewPerson(Person personToCreate) throws InternalServerError{
 
         try (Connection connection = DriverManager.getConnection(dbName)){
 
@@ -72,13 +72,13 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 System.out.println("Error Updating the fields and doing the update.");
+                 throw new InternalServerError("Error Updating the fields and doing the update.");
             }
 
         }
 
         catch(SQLException e){
-            System.out.println("The connection to database failed.");
+             throw new InternalServerError("The connection to database failed.");
         }
 
         return personToCreate.getId();
@@ -92,7 +92,7 @@ public class PersonDataAccess{
      * @return The person that responds to the given ID number.
      */
 
-    public Person getPersonById(String personID){
+    public Person getPersonById(String personID) throws InternalServerError{
 
         ResultSet queryResult = null;
         try (Connection connection = DriverManager.getConnection(dbName)){
@@ -107,7 +107,7 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 System.out.println("Error querying the database.");
+                 throw new InternalServerError("Error querying the database.");
             }
 
             // Checking how many rows there are.
@@ -121,7 +121,7 @@ public class PersonDataAccess{
         }
 
         catch(SQLException e){
-            System.out.println("The connection to database failed.");
+            throw new InternalServerError("The connection to database failed.");
         }
 
 
@@ -136,7 +136,7 @@ public class PersonDataAccess{
      * @return A list of all people that belong to them.
      */
 
-    public List<Person> getAllPeople(String descendant){
+    public List<Person> getAllPeople(String descendant) throws InternalServerError{
 
         ResultSet queryResult = null;
         PreparedStatement stmt = null;
@@ -154,7 +154,7 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 System.out.println("Error querying the database.");
+                throw new InternalServerError("Error querying the database.");
             }
 
             while (queryResult.next()){
@@ -163,7 +163,7 @@ public class PersonDataAccess{
         }
 
         catch(SQLException e){
-            System.out.println("The connection to database failed.");
+            throw new InternalServerError("The connection to database failed.");
         }
 
         return listOfPeople;
@@ -174,7 +174,7 @@ public class PersonDataAccess{
      * Drops all people in the database. This is called when /clear is requested.
      */
 
-    public void deleteAllPeople(){
+    public void deleteAllPeople() throws InternalServerError{
         try (Connection connection = DriverManager.getConnection(dbName)){
 
             String delete = "DELETE FROM person";
@@ -186,13 +186,13 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 System.out.println("Error querying the database.");
+                throw new InternalServerError("Error querying the database.");
             }
 
         }
 
         catch(SQLException e){
-            System.out.println("The connection to database failed.");
+            throw new InternalServerError("The connection to database failed.");
         }
     }
 } 
