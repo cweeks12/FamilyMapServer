@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.response;
 
 /** Class that holds everything for a response containing only a message. */
 

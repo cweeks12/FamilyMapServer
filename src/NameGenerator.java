@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.util;
 
 import java.util.List;
 import java.util.ArrayList;

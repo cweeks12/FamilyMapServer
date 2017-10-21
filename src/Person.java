@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.model;
 
 import java.lang.StringBuilder;
 import java.sql.ResultSet;

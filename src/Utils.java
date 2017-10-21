@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.util;
 
 import java.lang.StringBuilder;
 import java.util.Random;

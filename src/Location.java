@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.model;
 
 /**
  * Holds location information.

@@ -1,5 +1,8 @@
 package familyserver;
 
+import familyserver.model.AuthToken;
+import familyserver.request.*;
+import familyserver.response.*;
 
 /**
  * Interface for the server to interact with everything in the

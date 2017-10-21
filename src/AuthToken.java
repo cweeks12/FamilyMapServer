@@ -1,5 +1,6 @@
-package familyserver;
+package familyserver.model;
 
+import familyserver.util.Utils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

@@ -1,4 +1,7 @@
-package familyserver;
+package familyserver.response;
+
+import familyserver.model.AuthToken;
+import familyserver.model.Event;
 
 /** Class that holds everything for an individual event response. */
 

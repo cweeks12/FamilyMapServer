@@ -1,6 +1,6 @@
 package familyserver.test;
 
-import familyserver.Person;
+import familyserver.model.Person;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -13,8 +13,8 @@ public class PersonTest{
     /** Creates two Person objects and opens a connection to database */
     @Before
     public void setup(){
-        person = new Person("DEADBEEF", "cweeks12", "Sara", "Weeks", "F", null, null, "CA43291F");
-        secondPerson = new Person("CA8F191F", "cweeks12", "Amy", "Weeks" ,  "F", null, null, "E4827190");
+        person = new Person("DEADBEEF", "cweeks12", "Abby", "Grayson", "F", null, null, "CA43291F");
+        secondPerson = new Person("CA8F191F", "cweeks12", "Amy", "Grayson" ,  "F", null, null, "E4827190");
 
     }
         
@@ -23,7 +23,7 @@ public class PersonTest{
     public void testToString(){
 
         String personToString = person.toString();
-        String expectedString = "ID: DEADBEEF Desc: cweeks12 Name: Sara Weeks Gender: F";
+        String expectedString = "ID: DEADBEEF Desc: cweeks12 Name: Abby Grayson Gender: F";
 
         assertEquals(expectedString, personToString);
     }
@@ -34,7 +34,7 @@ public class PersonTest{
 
         assertTrue(person.equals(person));
 
-        assertFalse(person.equals(new Person("DEADBEEF", "cweeks12", "Sarah", "Weeks", "F", null, null, null))); 
+        assertFalse(person.equals(new Person("DEADBEEF", "cweeks12", "Sarah", "Grayson", "F", null, null, null))); 
     }
 
     @Test

@@ -1,9 +1,9 @@
 package familyserver.test;
 
-import familyserver.PersonDataAccess;
-import familyserver.Person;
-import familyserver.InternalServerError;
-import familyserver.PersonNotFoundError;
+import familyserver.access.PersonDataAccess;
+import familyserver.model.Person;
+import familyserver.error.InternalServerError;
+import familyserver.error.PersonNotFoundError;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.sql.Connection;
@@ -48,7 +48,7 @@ public class PersonDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("INSERT INTO person VALUES('12345678','cweeks12','Connor','Weeks','M',NULL,NULL,NULL)");
+            stmt = connection.prepareStatement("INSERT INTO person VALUES('12345678','cweeks12','Charles','Jones','M',NULL,NULL,NULL)");
             stmt.executeUpdate();
             stmt.close();
 
@@ -59,7 +59,7 @@ public class PersonDataAccessTest{
         }
 
         personDAO = new PersonDataAccess("test.db");
-        person = new Person("12345678", "cweeks12", "Connor", "Weeks", "M", null, null, "12345678");
+        person = new Person("12345678", "cweeks12", "Charles", "Jones", "M", null, null, "12345678");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class PersonDataAccessTest{
     @Test
     public void testAddingPersonToDatabase(){
         // This test adds a new person to the database, then tests if it arrived in there by looking for it.
-        Person wife = new Person("ABCDEF98", "cweeks12", "Sara", "Weeks", "F", null, null, "12345678");
+        Person wife = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
         try {
             personDAO.createNewPerson(wife);
         }
@@ -117,7 +117,7 @@ public class PersonDataAccessTest{
     public void testAddingInvalidPersonToDatabase(){
         // This test adds an invalid person to the database, should throw an exception
         try {
-            personDAO.createNewPerson(new Person("ABCDEF98", "cweeks12", "Sara", "Weeks", "Other", null, null, "12345678"));
+            personDAO.createNewPerson(new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "Other", null, null, "12345678"));
         }
         catch (InternalServerError e){
             fail(e.getMessage());
@@ -144,7 +144,7 @@ public class PersonDataAccessTest{
     public void testGettingListOfPeople(){
         // This test queries the database for all people belonging to "cweeks12" and makes sure the list is right.
         List<Person> givenPeople = new ArrayList<Person>();
-        Person newPerson = new Person("ABCDEF98", "cweeks12", "Sara", "Weeks", "F", null, null, "12345678");
+        Person newPerson = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
         try {
             personDAO.createNewPerson(newPerson);
             givenPeople = personDAO.getAllPeople("cweeks12");
@@ -161,7 +161,7 @@ public class PersonDataAccessTest{
     public void testGettingListOfPeopleWithInvalidUsername(){
         // This test queries the database for all people belonging to "target" and makes sure the result is null
         List<Person> givenPeople = new ArrayList<Person>();
-        Person newPerson = new Person("ABCDEF98", "cweeks12", "Sara", "Weeks", "F", null, null, "12345678");
+        Person newPerson = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
         try {
             personDAO.createNewPerson(newPerson);
             givenPeople = personDAO.getAllPeople("target");
@@ -176,7 +176,7 @@ public class PersonDataAccessTest{
     public void testGettingListOfPeopleWithNullUsername(){
         // This test queries the database for all people belonging to null and makes sure the result is null
         List<Person> givenPeople = new ArrayList<Person>();
-        Person newPerson = new Person("ABCDEF98", "cweeks12", "Sara", "Weeks", "F", null, null, "12345678");
+        Person newPerson = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
         try {
             personDAO.createNewPerson(newPerson);
             givenPeople = personDAO.getAllPeople(null);

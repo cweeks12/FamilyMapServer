@@ -1,5 +1,6 @@
-package familyserver;
+package familyserver.access;
 
+import familyserver.model.Event;
 import java.util.List;
 
 /**

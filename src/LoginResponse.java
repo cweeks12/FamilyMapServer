@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.response;
 
 /** Class that holds everything for a login response. It only has setters because you're setting a response.*/
 

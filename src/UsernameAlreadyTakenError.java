@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.error;
 
 /** Custom exception thrown with username already taken.
  *

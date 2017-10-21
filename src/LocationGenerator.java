@@ -1,5 +1,6 @@
-package familyserver;
+package familyserver.util;
 
+import familyserver.model.Location;
 import java.util.List;
 import java.util.ArrayList;
 

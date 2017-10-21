@@ -1,5 +1,6 @@
-package familyserver;
+package familyserver.response;
 
+import familyserver.model.Event;
 import java.util.List;
 import java.util.ArrayList;
 

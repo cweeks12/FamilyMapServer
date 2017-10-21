@@ -1,4 +1,7 @@
-package familyserver;
+package familyserver.access;
+
+import familyserver.error.InvalidAuthTokenError;
+import familyserver.model.AuthToken;
 
 /**
  * Accesses the database for AuthToken objects.

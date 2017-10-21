@@ -1,5 +1,8 @@
-package familyserver;
+package familyserver.request;
 
+import familyserver.model.Event;
+import familyserver.model.Person;
+import familyserver.model.User;
 import java.util.List;
 import java.util.ArrayList;
 

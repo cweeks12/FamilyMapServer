@@ -1,4 +1,7 @@
-package familyserver;
+package familyserver.access;
+
+import familyserver.model.User;
+import familyserver.request.RegisterRequest;
 
 /**
  * Accesses the database for User objects.

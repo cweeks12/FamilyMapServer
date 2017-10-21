@@ -1,4 +1,7 @@
-package familyserver;
+package familyserver.response;
+
+import familyserver.model.AuthToken;
+import familyserver.model.Person;
 
 /** Class that holds everything for an individual person response.
  * This class only has setters because it's a response class. You're only setting responses you'll send back. */

@@ -1,4 +1,4 @@
-package familyserver;
+package familyserver.request;
 
 /** Class that holds everything for a login request. It only has getters because it's reading a request.*/
 

@@ -1,6 +1,4 @@
-package familyserver;
-
-import java.sql.ResultSet;
+package familyserver.model;
 
 /**
  * Contains all information about events
@@ -15,7 +13,7 @@ public class Event{
     private String id;
     /** The event's username */
     private String username;
-    /** The event's personId */
+    /** The person this event belongs to */
     private String personId;
     /** The event's eventLocation */
     private Location eventLocation;
