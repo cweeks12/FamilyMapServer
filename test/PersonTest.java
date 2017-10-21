@@ -1,7 +1,6 @@
 package familyserver.test;
 
 import familyserver.Person;
-import familyserver.PersonDataAccess;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -9,7 +8,6 @@ public class PersonTest{
 
     private Person person;
     private Person secondPerson;
-    private PersonDataAccess personDAO;
 
 
     /** Creates two Person objects and opens a connection to database */
@@ -17,7 +15,7 @@ public class PersonTest{
     public void setup(){
         person = new Person("DEADBEEF", "cweeks12", "Sara", "Weeks", "F", null, null, "CA43291F");
         secondPerson = new Person("CA8F191F", "cweeks12", "Amy", "Weeks" ,  "F", null, null, "E4827190");
-        personDAO = new PersonDataAccess(":memory:");
+
     }
         
     /** Tests the toString function and makes sure it runs how it should. */
@@ -79,7 +77,8 @@ public class PersonTest{
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFirstNameSetterError(){
+    public void testNullInputSetterError(){
         person.setFirstName(null);
     }
+
 }

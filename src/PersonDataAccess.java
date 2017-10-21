@@ -21,7 +21,7 @@ public class PersonDataAccess{
     private final String driver = "org.sqlite.JDBC";
 
     // Holds the name of the database
-    private String dbName = null;
+    private String dbName;
 
     /** Builds a new user data access object to interact with user database.
      *
@@ -36,7 +36,7 @@ public class PersonDataAccess{
             System.out.println("Error finding the SQLite driver.");
         }
 
-        String dbName = "jdbc:sqlite:"+databasePath;
+        dbName = "jdbc:sqlite:"+databasePath;
     }
 
     /** 
@@ -94,38 +94,68 @@ public class PersonDataAccess{
 
     public Person getPersonById(String personID) throws InternalServerError{
 
-        ResultSet queryResult = null;
-        try (Connection connection = DriverManager.getConnection(dbName)){
-
-            String query = "SELECT * FROM person WHERE personId = ? ";
-
-            try{
-                PreparedStatement stmt = connection.prepareStatement(query);
-                stmt.setString(1, personID);
-
-                queryResult = stmt.executeQuery();
-                stmt.close();
-            }
-            catch(SQLException e){
-                 throw new InternalServerError("Error querying the database.");
-            }
-
-            // Checking how many rows there are.
-            queryResult.last();
-            if (queryResult.getRow() > 1){
-                System.out.println("There is more than one user that has that ID number. Uh oh.");
-            }
-            queryResult.beforeFirst();
-            queryResult.next();
-
+        if (personID == null){
+            return null;
         }
 
+        ResultSet queryResult = null;
+        Connection connection = null;
+        PreparedStatement stmt = null;
+
+        String id;
+        String descendant;
+        String firstName;
+        String lastName;
+        String gender;
+        String father;
+        String mother;
+        String spouse;
+
+        try {
+            connection = DriverManager.getConnection(dbName);
+        }
         catch(SQLException e){
             throw new InternalServerError("The connection to database failed.");
         }
 
+        String query = "SELECT * FROM person WHERE personId = ? ";
 
-        return new Person(queryResult);
+        try{
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, personID);
+
+            queryResult = stmt.executeQuery();
+        }
+        catch(SQLException e){
+             throw new InternalServerError("Error querying the database." + e.getMessage());
+        }
+
+        try{
+            id = queryResult.getString("personId");
+            descendant = queryResult.getString("descendant");
+            firstName = queryResult.getString("firstName");
+            lastName = queryResult.getString("lastName");
+            gender = queryResult.getString("gender");
+            father = queryResult.getString("father");
+            mother = queryResult.getString("mother");
+            spouse = queryResult.getString("spouse");
+        }
+        catch (SQLException e){
+            // If there is an exception here, it's because there are no results in the set.
+            return null;
+        }
+
+        try{
+            queryResult.close();
+            stmt.close();
+            connection.close();
+            connection = null;
+        }
+        catch (SQLException e){
+             throw new InternalServerError("Error closing connection." + e.getMessage());
+        }
+
+        return new Person(id, descendant, firstName, lastName, gender, father, mother, spouse);
     }
 
 
@@ -136,34 +166,77 @@ public class PersonDataAccess{
      * @return A list of all people that belong to them.
      */
 
-    public List<Person> getAllPeople(String descendant) throws InternalServerError{
+    public List<Person> getAllPeople(String personQuerying) throws InternalServerError{
 
+        if (personQuerying == null){
+            return null;
+        }
+
+        Connection connection = null;
         ResultSet queryResult = null;
         PreparedStatement stmt = null;
         ArrayList<Person> listOfPeople = new ArrayList<Person>();
 
-        try (Connection connection = DriverManager.getConnection(dbName)){
+        String id;
+        String descendant;
+        String firstName;
+        String lastName;
+        String gender;
+        String father;
+        String mother;
+        String spouse;
 
-            String query = "SELECT * FROM person WHERE descendant = ? ";
-
-            try{
-                stmt = connection.prepareStatement(query);
-                stmt.setString(1, descendant);
-
-                queryResult = stmt.executeQuery();
-                stmt.close();
-            }
-            catch(SQLException e){
-                throw new InternalServerError("Error querying the database.");
-            }
-
-            while (queryResult.next()){
-                listOfPeople.add(new Person(queryResult));
-            }
+        try{
+            connection = DriverManager.getConnection(dbName);
         }
-
         catch(SQLException e){
             throw new InternalServerError("The connection to database failed.");
+        }
+
+        String query = "SELECT * FROM person WHERE descendant = ? ";
+
+        try{
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, personQuerying);
+
+            queryResult = stmt.executeQuery();
+        }
+        catch(SQLException e){
+            throw new InternalServerError("Error querying the database.");
+        }
+
+        try{
+
+            while (queryResult.next()){
+                id = queryResult.getString("personId");
+                descendant = queryResult.getString("descendant");
+                firstName = queryResult.getString("firstName");
+                lastName = queryResult.getString("lastName");
+                gender = queryResult.getString("gender");
+                father = queryResult.getString("father");
+                mother = queryResult.getString("mother");
+                spouse = queryResult.getString("spouse");
+                listOfPeople.add(new Person(id, descendant, firstName, lastName, gender, father, mother, spouse));
+            }
+        }
+        catch (SQLException e){
+            // If there is an exception here, it's because there are no results in the set.
+            return null;
+        }
+
+        try {
+            queryResult.close();
+            stmt.close();
+            connection.close();
+            connection = null;
+        }
+        catch (SQLException e){
+            throw new InternalServerError("Error closing the connection to database." + e.getMessage());
+        }
+
+        // If nobody was added to the list, return a null object
+        if (listOfPeople.size() == 0){
+            return null;
         }
 
         return listOfPeople;

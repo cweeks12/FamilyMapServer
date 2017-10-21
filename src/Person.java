@@ -54,8 +54,14 @@ public class Person{
 
         Person p = (Person) o;
 
-        return this.id == p.getId() && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
+        return this.id.equals(p.getId()) && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
     }
+
+    /**
+     * Builds a string with ID, Descendant, Name, and Gender.
+     *
+     * @return A string describing the person
+     */
 
     @Override
     public String toString(){
@@ -70,27 +76,6 @@ public class Person{
     }
 
 
-    /** Constructs a Person based on a database query.
-     *
-     * @param rs SQL result set to build the person from.
-     */
-
-    public Person(ResultSet rs){
-        try{
-            this.id = rs.getString("personId");
-            this.descendant = rs.getString("descendant");
-            this.firstName = rs.getString("firstName");
-            this.lastName = rs.getString("lastName");
-            this.gender = rs.getString("gender");
-            this.father = rs.getString("father");
-            this.mother = rs.getString("mother");
-            this.spouse = rs.getString("spouse");
-        }
-        catch (SQLException e){
-            System.out.println("Error building Person object.");
-        }
-    }
-
     public Person(String id, 
                     String descendant, 
                     String firstName, 
@@ -101,7 +86,7 @@ public class Person{
                     String spouse) throws IllegalArgumentException{
 
         if (!(gender.equals("F") || gender.equals("M"))){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Gender must be 'F' or 'M'.");
         }
 
         if (id == null || descendant == null || firstName == null || lastName == null || gender == null){

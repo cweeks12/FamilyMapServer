@@ -25,16 +25,12 @@ public class Event{
     private int year;
 
 
-    /**
-     * Constructs an event from an SQL query.
-     *
-     * @param rs The SQL query that contains information about the Event.
-     */
+    public Event(String id, String username, String personId, Location eventLocation, String eventType, Integer year) throws IllegalArgumentException{
 
-    public Event(ResultSet rs){
-    }
+        if (id == null || username == null || personId == null || eventLocation == null || eventType == null || year == null){
+            throw new IllegalArgumentException();
+        }
 
-    public Event(String id, String username, String personId, Location eventLocation, String eventType, int year){
         this.id = id;
         this.username = username;
         this.personId = personId;
@@ -54,6 +50,9 @@ public class Event{
     }
 
     public void setId(String id){
+        if (id == null){
+            throw new IllegalArgumentException();
+        }
         this.id = id;
     }
 
@@ -62,6 +61,9 @@ public class Event{
     }
 
     public void setUsername(String username){
+        if (username == null){
+            throw new IllegalArgumentException();
+        }
         this.username = username;
     }
 
@@ -70,6 +72,9 @@ public class Event{
     }
 
     public void setPersonId(String personId){
+        if (personId == null){
+            throw new IllegalArgumentException();
+        }
         this.personId = personId;
     }
 
@@ -78,6 +83,9 @@ public class Event{
     }
 
     public void setEventLocation(Location eventLocation){
+        if (eventLocation == null){
+            throw new IllegalArgumentException();
+        }
         this.eventLocation = eventLocation;
     }
 
@@ -86,6 +94,9 @@ public class Event{
     }
 
     public void setEventType(String eventType){
+        if (eventType == null){
+            throw new IllegalArgumentException();
+        }
         this.eventType = eventType;
     }
 
@@ -93,7 +104,10 @@ public class Event{
         return year;
     }
 
-    public void setYear(int year){
+    public void setYear(Integer year){
+        if (year == null || year < 0){
+            throw new IllegalArgumentException();
+        }
         this.year = year;
     }
 }

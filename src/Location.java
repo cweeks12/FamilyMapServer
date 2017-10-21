@@ -35,6 +35,11 @@ public class Location{
         this.longitude = longitude;
     }
 
+    @Override
+    public String toString(){
+        return "Location: " + city + ", " + country + " (" + Float.toString(latitude) + ", " + Float.toString(longitude) + ")";
+    }
+
     /*
      *
      * GETTERS AND SETTERS

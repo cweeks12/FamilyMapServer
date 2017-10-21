@@ -7,7 +7,9 @@ public class TestDriver{
     public static void main(String[] args){
 
         JUnitCore.main(
-                "familyserver.test.PersonTest"
+                "familyserver.test.PersonTest",
+                "familyserver.test.PersonDataAccessTest",
+                "familyserver.test.EventTest"
                 );
     }
 }

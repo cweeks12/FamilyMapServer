@@ -12,3 +12,6 @@ docs/*
 
 #Tags files
 **/tags
+
+# Any generated databases
+*.db
