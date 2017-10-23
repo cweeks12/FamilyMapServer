@@ -10,7 +10,8 @@ public class TestDriver{
                 "familyserver.test.PersonTest",
                 "familyserver.test.PersonDataAccessTest",
                 "familyserver.test.EventTest",
-                "familyserver.test.EventDataAccessTest"
+                "familyserver.test.EventDataAccessTest",
+                "familyserver.test.UserTest"
                 );
     }
 }

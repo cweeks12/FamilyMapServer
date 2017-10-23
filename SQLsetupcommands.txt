@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS user (username NOT NULL TEXT PRIMARY KEY, password NOT NULL TEXT, email NOT NULL TEXT, firstName NOT NULL TEXT, lastName NOT NULL TEXT, gender NOT NULL TEXT, personId NOT NULL TEXT, FOREIGN KEY (personId) REFERENCES person(id));
+CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL, FOREIGN KEY (personId) REFERENCES person(id));
 
-CREATE TABLE IF NOT EXISTS person (personId NOT NULL TEXT PRIMARY KEY, descendant NOT NULL TEXT, firstName NOT NULL TEXT, lastName NOT NULL TEXT, gender NOT NULL TEXT, father TEXT, mother TEXT, spouse TEXT, FOREIGN KEY (descendant) REFERENCES user(username));
+CREATE TABLE IF NOT EXISTS person (personId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, father TEXT, mother TEXT, spouse TEXT, FOREIGN KEY (descendant) REFERENCES user(username));
 
-CREATE TABLE IF NOT EXISTS authToken (authToken NOT NULL TEXT PRIMARY KEY, username NOT NULL TEXT, expiryTime NOT NULL INTEGER, FOREIGN KEY (username) REFERENCES user(username));
+CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL, expiryTime NOT NULL INTEGER, FOREIGN KEY (username) REFERENCES user(username));
 
-CREATE TABLE IF NOT EXISTS event (eventId NOT NULL TEXT PRIMARY KEY, descendant NOT NULL TEXT, person NOT NULL TEXT, latitude NOT NULL REAL, longitude NOT NULL REAL, country NOT NULL TEXT, city NOT NULL TEXT, eventType NOT NULL TEXT, year NOT NULL TEXT, FOREIGN KEY (descendant) REFERENCES user(username), FOREIGN KEY (person) REFERENCES person(personId));
+CREATE TABLE IF NOT EXISTS event (eventId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, person TEXT NOT NULL, latitude NOT NULL REAL, longitude NOT NULL REAL, country TEXT NOT NULL, city TEXT NOT NULL, eventType TEXT NOT NULL, year TEXT NOT NULL, FOREIGN KEY (descendant) REFERENCES user(username), FOREIGN KEY (person) REFERENCES person(personId));

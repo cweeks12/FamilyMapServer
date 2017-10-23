@@ -85,6 +85,7 @@ public class Person{
                     String mother, 
                     String spouse) throws IllegalArgumentException{
 
+        gender = gender.toUpperCase();
         if (!(gender.equals("F") || gender.equals("M"))){
             throw new IllegalArgumentException("Gender must be 'F' or 'M'.");
         }
@@ -156,9 +157,15 @@ public class Person{
     }
 
     public void setGender(String gender) throws IllegalArgumentException{
-        if (gender == null || !(gender.equals("F") || gender.equals("M"))){
+        if (gender == null){
             throw new IllegalArgumentException();
         }
+
+        gender = gender.toUpperCase();
+        if (!gender.equals("F") && !gender.equals("M")){
+            throw new IllegalArgumentException();
+        }
+
         this.gender = gender;
     }
     public String getFather(){

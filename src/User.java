@@ -1,5 +1,6 @@
 package familyserver.model;
 
+import java.util.regex.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -33,35 +34,27 @@ public class User{
     /** The user's unique id number. */
     private String id;
 
-
-    /** 
-     * Creates a user based on an sql query.
-     *
-     * @param rs An sql result set that you create the user from.
-     */
-
-    public User(ResultSet rs){
-        try{
-            this.username = rs.getString("username");
-            this.password = rs.getString("password");
-            this.email = rs.getString("email");
-            this.firstName = rs.getString("firstName");
-            this.lastName = rs.getString("lastName");
-            this.gender = rs.getString("gender");
-            this.id = rs.getString("id");
-        }
-        catch(SQLException e){
-            System.out.println("Error creating User from SQL.");
-        }
-    }
-
     public User( String username,
                     String password,
                     String email,
                     String firstName,
                     String lastName,
                     String gender,
-                    String id){
+                    String id) throws IllegalArgumentException{
+
+        if (username == null || password == null || email == null || firstName == null
+                || lastName == null || gender == null || id == null){
+            throw new IllegalArgumentException();
+        }
+
+        if (!Pattern.matches("\\p{Alpha}\\w*@\\w+\\.\\w{3,}", email)){
+            throw new IllegalArgumentException();
+        }
+
+        gender = gender.toUpperCase();
+        if (!gender.equals("F") && !gender.equals("M")){
+            throw new IllegalArgumentException();
+        }
 
         this.username = username;
         this.password = password;
@@ -70,6 +63,27 @@ public class User{
         this.lastName = lastName;
         this.gender = gender;
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+
+        if (o.getClass() != this.getClass()){
+            return false;
+        }
+
+        User u = (User) o;
+
+        return this.username.equals(u.getUsername())
+            && this.password.equals(u.getPassword())
+            && this.email.equals(u.getEmail())
+            && this.firstName.equals(u.getFirstName())
+            && this.lastName.equals(u.getLastName())
+            && this.gender.equals(u.getGender())
+            && this.id.equals(u.getId());
     }
 
     /*
@@ -82,7 +96,10 @@ public class User{
         return username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) throws IllegalArgumentException{
+        if (username == null){
+            throw new IllegalArgumentException();
+        }
         this.username = username;
     }
 
@@ -90,7 +107,10 @@ public class User{
         return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) throws IllegalArgumentException{
+        if (password == null){
+            throw new IllegalArgumentException();
+        }
         this.password = password;
     }
 
@@ -98,7 +118,13 @@ public class User{
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) throws IllegalArgumentException{
+        if (email == null){
+            throw new IllegalArgumentException();
+        }
+        if (!Pattern.matches("\\p{Alpha}\\w*@\\w+\\.\\w{3,}", email)){
+            throw new IllegalArgumentException();
+        }
         this.email = email;
     }
 
@@ -106,7 +132,10 @@ public class User{
         return firstName;
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) throws IllegalArgumentException{
+        if (firstName == null){
+            throw new IllegalArgumentException();
+        }
         this.firstName = firstName;
     }
 
@@ -114,7 +143,10 @@ public class User{
         return lastName;
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) throws IllegalArgumentException{
+        if (lastName == null){
+            throw new IllegalArgumentException();
+        }
         this.lastName = lastName;
     }
 
@@ -122,7 +154,16 @@ public class User{
         return gender;
     }
 
-    public void setGender(String gender){
+    public void setGender(String gender) throws IllegalArgumentException{
+        if (gender == null){
+            throw new IllegalArgumentException();
+        }
+
+        gender = gender.toUpperCase();
+        if (!gender.equals("F") && !gender.equals("M")){
+            throw new IllegalArgumentException();
+        }
+
         this.gender = gender;
     }
 
@@ -130,7 +171,10 @@ public class User{
         return id;
     }
 
-    public void setId(String id){
+    public void setId(String id) throws IllegalArgumentException{
+        if (id == null){
+            throw new IllegalArgumentException();
+        }
         this.id = id;
     }
 

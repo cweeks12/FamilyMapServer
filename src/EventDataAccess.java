@@ -93,7 +93,7 @@ public class EventDataAccess{
     /** 
      * Queries the database and returns the Event object from the username.
      *
-     * @param eventId The unique evvent ID to get the event for.
+     * @param eventId The unique event ID to get the event for.
      * @return The event that responds to the given ID number.
      */
 
