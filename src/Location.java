@@ -35,10 +35,34 @@ public class Location{
         this.longitude = longitude;
     }
 
+    public Location(String country, String city, double latitude, double longitude){
+        this.country = country;
+        this.city = city;
+        this.latitude = (float)latitude;
+        this.longitude = (float)longitude;
+    }
+
     @Override
     public String toString(){
         return "Location: " + city + ", " + country + " (" + Float.toString(latitude) + ", " + Float.toString(longitude) + ")";
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+
+        if (o.getClass() != this.getClass()){
+            return false;
+        }
+
+        Location loc = (Location) o;
+
+        return this.city.equals(loc.getCity()) && this.country.equals(loc.getCountry()) && this.latitude == loc.getLatitude() && this.longitude == loc.getLongitude();
+
+    }
+
 
     /*
      *

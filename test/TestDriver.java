@@ -9,7 +9,8 @@ public class TestDriver{
         JUnitCore.main(
                 "familyserver.test.PersonTest",
                 "familyserver.test.PersonDataAccessTest",
-                "familyserver.test.EventTest"
+                "familyserver.test.EventTest",
+                "familyserver.test.EventDataAccessTest"
                 );
     }
 }

@@ -37,6 +37,21 @@ public class Event{
         this.year = year;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+
+        if (o.getClass() != this.getClass()){
+            return false;
+        }
+
+        Event e = (Event) o;
+
+        return this.id.equals(e.getId()) && this.username.equals(e.getUsername()) && this.personId.equals(e.getPersonId()) && this.eventLocation.equals(e.getEventLocation()) && this.eventType.equals(e.getEventType()) && this.year == e.getYear();
+    }
+
     /*
      *
      * GETTERS AND SETTERS

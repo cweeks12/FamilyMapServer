@@ -16,7 +16,6 @@ import java.util.List;
 
 public class PersonDataAccessTest{
 
-
     private PersonDataAccess personDAO;
     private Person person;
 
