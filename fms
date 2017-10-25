@@ -16,14 +16,13 @@ fi
 # Compile Tests command
 if [ "$COMMAND" == compile-tests ]
 then
-    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar src/*.java
-    javac -d . -cp .:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar test/*.java
+    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
+#    javac -d . -cp .:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar test/*.java
 fi
 
 # Run Tests command
 if [ "$COMMAND" == run-tests ]
 then
-    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar src/*.java
-    javac -d . -cp .:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar test/*.java
+    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
     java -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar familyserver.test.TestDriver
 fi

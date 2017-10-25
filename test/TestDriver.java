@@ -11,7 +11,8 @@ public class TestDriver{
                 "familyserver.test.PersonDataAccessTest",
                 "familyserver.test.EventTest",
                 "familyserver.test.EventDataAccessTest",
-                "familyserver.test.UserTest"
+                "familyserver.test.UserTest",
+                "familyserver.test.UserDataAccessTest"
                 );
     }
 }

@@ -19,16 +19,32 @@ public class RegisterRequest{
     /** User's last name. */
     public String lastName;
 
-    /** User's gender. Must be "m" or "f". */
+    /** User's gender. Must be "M" or "F". */
     public String gender;
 
     /**
-     * Constructor that builds the object from a json string.
-     *
-     * @param jsonString String holding json contents of object.
+     * Constructor that builds the object from individual parts.
      */
     
-    public RegisterRequest(String jsonString){
+    public RegisterRequest(
+        String userName,
+        String password,
+        String email,
+        String firstName,
+        String lastName,
+        String gender) throws IllegalArgumentException{
+
+        if (userName == null || password == null
+            || email == null || firstName == null
+            || lastName == null || gender == null){
+            throw new IllegalArgumentException();
+        }
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
     }
 
     public String getUserName(){
