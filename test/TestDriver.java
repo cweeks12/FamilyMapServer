@@ -12,7 +12,9 @@ public class TestDriver{
                 "familyserver.test.EventTest",
                 "familyserver.test.EventDataAccessTest",
                 "familyserver.test.UserTest",
-                "familyserver.test.UserDataAccessTest"
+                "familyserver.test.UserDataAccessTest",
+                "familyserver.test.AuthTokenTest",
+                "familyserver.test.AuthTokenDataAccessTest"
                 );
     }
 }

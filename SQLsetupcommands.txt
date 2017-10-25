@@ -2,6 +2,6 @@ CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TE
 
 CREATE TABLE IF NOT EXISTS person (personId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, father TEXT, mother TEXT, spouse TEXT, FOREIGN KEY (descendant) REFERENCES user(username));
 
-CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL, expiryTime NOT NULL INTEGER, FOREIGN KEY (username) REFERENCES user(username));
+CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL, FOREIGN KEY (username) REFERENCES user(username));
 
 CREATE TABLE IF NOT EXISTS event (eventId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, person TEXT NOT NULL, latitude NOT NULL REAL, longitude NOT NULL REAL, country TEXT NOT NULL, city TEXT NOT NULL, eventType TEXT NOT NULL, year TEXT NOT NULL, FOREIGN KEY (descendant) REFERENCES user(username), FOREIGN KEY (person) REFERENCES person(personId));

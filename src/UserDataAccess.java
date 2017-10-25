@@ -157,6 +157,66 @@ public class UserDataAccess{
 
 
     /**
+     * Decides whether the username and password are correct.
+     *
+     * @param username The username used for login.
+     * @param password The password used for login.
+     * @return True if valid combination, false if invalid.
+     */
+
+    public boolean checkLogin(String username, String password) throws InternalServerError{
+        if (username == null || password == null){
+            return false;
+        }
+
+        ResultSet queryResult = null;
+        Connection connection = null;
+        PreparedStatement stmt = null;
+
+        String foundPassword;
+
+        try {
+            connection = DriverManager.getConnection(dbName);
+        }
+        catch(SQLException e){
+            throw new InternalServerError("The connection to database failed.");
+        }
+
+        String query = "SELECT * FROM user WHERE username = ? ";
+
+        try{
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, username);
+
+            queryResult = stmt.executeQuery();
+        }
+        catch(SQLException e){
+             throw new InternalServerError("Error querying the database." + e.getMessage());
+        }
+
+        try{
+            foundPassword = queryResult.getString("password");
+        }
+        catch (SQLException e){
+            // If there is an exception here, it's because there are no results in the set.
+            return false;
+        }
+
+        try{
+            queryResult.close();
+            stmt.close();
+            connection.close();
+            connection = null;
+        }
+        catch (SQLException e){
+             throw new InternalServerError("Error closing connection." + e.getMessage());
+        }
+
+        return foundPassword.equals(password);
+    }
+
+
+    /**
      * Drops all users in the database. This is called when /clear is requested.
      */
 

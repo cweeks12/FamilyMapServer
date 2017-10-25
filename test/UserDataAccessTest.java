@@ -91,6 +91,45 @@ public class UserDataAccessTest{
     }
 
     @Test
+    public void testCorrectPassword(){
+        boolean correct = false;
+        try {
+            correct = userDAO.checkLogin("cweeks12", "pa$$word");
+        }
+        catch (InternalServerError e){
+            fail(e.getMessage());
+        }
+
+        assertTrue(correct);
+    }
+
+    @Test
+    public void testIncorrectPassword(){
+        boolean correct = false;
+        try {
+            correct = userDAO.checkLogin("cweeks12", "p@$$word");
+        }
+        catch (InternalServerError e){
+            fail(e.getMessage());
+        }
+
+        assertFalse(correct);
+    }
+
+    @Test
+    public void testNullPassword(){
+        boolean correct = false;
+        try {
+            correct = userDAO.checkLogin("cweeks12", null);
+        }
+        catch (InternalServerError e){
+            fail(e.getMessage());
+        }
+
+        assertFalse(correct);
+    }
+
+    @Test
     public void testAddingUserToDatabase(){
         // This test adds a new user to the database, then tests if it arrived in there by looking for it.
         RegisterRequest newUser = new RegisterRequest("janna", "pass", "janna@edu.edu","Janna","Arlington","F");

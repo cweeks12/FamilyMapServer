@@ -20,29 +20,35 @@ public class AuthToken{
     /** User the token belongs to. */
     private String username;
 
-    /** Time the token expires. Should be one hour after initial login */
-    private long expireTime;
-
-
-    /** Constructs an AuthToken based on an sql result set.*/
-    public AuthToken(ResultSet rs){
-        try {
-            this.token = rs.getString("authToken");
-            this.username = rs.getString("username");
-            this.expireTime = rs.getLong("expiryTime");
-        }
-        catch (SQLException e){
-            System.out.println("There was an error creating the AuthToken");
-        }
-    }
-
     /** Constructs an AuthToken given a username and a time until it expires. */
-    public AuthToken(String username, long timeUntilExpiry){
+    public AuthToken(String username) throws IllegalArgumentException{
+        if (username == null){
+            throw new IllegalArgumentException();
+        }
         this.token = Utils.generateId();
         this.username = username;
+    }
 
-        // Create the timestamp when the token should expire.
-        this.expireTime = (System.currentTimeMillis()/1000) + timeUntilExpiry;
+    /** Constructs an AuthToken given all of the parameters. */
+    public AuthToken(String username, String token) throws IllegalArgumentException{
+        if (token == null || username == null){
+            throw new IllegalArgumentException();
+        }
+        this.token = token;
+        this.username = username;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null){
+            return false;
+        }
+        if (o.getClass() != this.getClass()){
+            return false;
+        }
+        AuthToken a = (AuthToken) o;
+
+        return this.token.equals(a.getToken()) && this.username.equals(a.getUsername());
     }
 
     /*
@@ -55,7 +61,11 @@ public class AuthToken{
         return token;
     }
 
-    public void setToken(String token){
+    public void setToken(String token) throws IllegalArgumentException{
+        if (token == null){
+            throw new IllegalArgumentException();
+        }
+
         this.token = token;
     }
 
@@ -63,15 +73,11 @@ public class AuthToken{
         return username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) throws IllegalArgumentException{
+        if (username == null){
+            throw new IllegalArgumentException();
+        }
         this.username = username;
     }
 
-    public long getExpireTime(){
-        return expireTime;
-    }
-
-    public void setExpireTime(long expireTime){
-        this.expireTime = expireTime;
-    }
 }
