@@ -41,9 +41,23 @@ public class EventDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+
+        Connection connection = null;
+        try{
+            connection = DriverManager.getConnection(dbName);
+
+            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS event (eventId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, person TEXT NOT NULL, latitude REAL NOT NULL, longitude REAL NOT NULL, country TEXT NOT NULL, city TEXT NOT NULL, eventType TEXT NOT NULL, year TEXT NOT NULL)");
+            stmt.executeUpdate();
+            stmt.close();
+
+        }
+        catch (SQLException e){
+            System.out.println("Error creating database");
+            System.out.println(e.getMessage());
+        }
     }
 
-    /** 
+    /**
      * Adds a new event to the database.
      *
      * @param eventToCreate the new event to add to the database.
@@ -90,7 +104,7 @@ public class EventDataAccess{
         return eventToCreate.getId();
     }
 
-    /** 
+    /**
      * Queries the database and returns the Event object from the username.
      *
      * @param eventId The unique event ID to get the event for.
@@ -166,7 +180,7 @@ public class EventDataAccess{
     }
 
 
-    /** 
+    /**
      * Queries the database and returns all Events that belong to the given user.
      *
      * @param owner The username that's requesting all their events.
@@ -276,4 +290,4 @@ public class EventDataAccess{
             throw new InternalServerError("The connection to database failed.");
         }
     }
-} 
+}

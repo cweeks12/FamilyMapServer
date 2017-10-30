@@ -42,6 +42,19 @@ public class AuthTokenDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+        Connection connection = null;
+        try{
+            connection = DriverManager.getConnection(dbName);
+
+            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL)");
+            stmt.executeUpdate();
+            stmt.close();
+
+        }
+        catch (SQLException e){
+            System.out.println("Error creating database");
+            System.out.println(e.getMessage());
+        }
     }
 
     /** Generates a new authorization token for the given user. This function validates the username and password,
@@ -50,7 +63,7 @@ public class AuthTokenDataAccess{
      * @param userName The username of the person making the request.
      * @return The new authorization token generated.
      */
- 
+
     public String newAuthToken(String userName) throws InternalServerError{
 
         AuthToken newToken = new AuthToken(userName);
@@ -221,4 +234,4 @@ public class AuthTokenDataAccess{
             throw new InternalServerError("The connection to database failed.");
         }
     }
-} 
+}

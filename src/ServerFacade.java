@@ -35,7 +35,7 @@ public class ServerFacade{
     public static void main(String[] args) throws Exception{
         ServerFacade sf = new ServerFacade("hello.db");
         sf.register(new RegisterRequest("cweeks12", "hi", "connorweeks1@gmail.com", "Connor", "Weeks", "M"));
-        sf.fill("cweeks12",3);
+        sf.fill("cweeks12",9);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ServerFacade{
         String newToken = null;
         try{
             newUserId = userDAO.createNewUser(request);
-            //newToken = authDAO.newAuthToken(request.getUserName());
+            newToken = authDAO.newAuthToken(request.getUserName());
         }
 
         catch(IllegalArgumentException e){
@@ -202,10 +202,14 @@ public class ServerFacade{
                 System.out.println(p);
             }
 
-            int personsMade = 0;
             int eventsMade = 0;
 
-            message = "Successfully added " + personsMade + " persons and " + eventsMade + " events to the database.";
+            for (int i = 1; i < newPeople.length; i++){
+                // Create birth, baptism, marriage, and death for some of them
+                // I'll do this later because it's lame
+            }
+
+            message = "Successfully added " + newPeopleQuantity + " persons and " + eventsMade + " events to the database.";
         }
         catch(InternalServerError e){
             message = "FAIL. " + e.getMessage();

@@ -46,11 +46,7 @@ public class UserDataAccess{
         try{
             connection = DriverManager.getConnection(dbName);
 
-            PreparedStatement stmt = connection.prepareStatement("DROP TABLE IF EXISTS user");
-            stmt.executeUpdate();
-            stmt.close();
-
-            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL)");
+            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL)");
             stmt.executeUpdate();
             stmt.close();
 
