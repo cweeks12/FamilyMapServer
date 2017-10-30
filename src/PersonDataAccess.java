@@ -262,6 +262,32 @@ public class PersonDataAccess{
         return listOfPeople;
     }
 
+    /**
+     * Drops all people in the database relating to certain person. This is called when /clear is requested.
+     */
+
+    public void deleteUserPeople(String username) throws InternalServerError{
+        try (Connection connection = DriverManager.getConnection(dbName)){
+
+            String delete = "DELETE FROM person WHERE descendant = ?";
+
+            try{
+                PreparedStatement stmt = connection.prepareStatement(delete);
+                stmt.setString(1, username);
+
+                stmt.executeUpdate();
+                stmt.close();
+            }
+            catch(SQLException e){
+                throw new InternalServerError("Error querying the database.");
+            }
+
+        }
+
+        catch(SQLException e){
+            throw new InternalServerError("The connection to database failed.");
+        }
+    }
 
     /**
      * Drops all people in the database. This is called when /clear is requested.

@@ -51,13 +51,14 @@ public class ServerFacade{
         String newToken = null;
         try{
             newUserId = userDAO.createNewUser(request);
-            newToken = authDAO.newAuthToken(request.getUserName());
+            //newToken = authDAO.newAuthToken(request.getUserName());
         }
 
         catch(IllegalArgumentException e){
 
         }
         catch(InternalServerError e){
+            System.out.println(e.getMessage());
             throw new UsernameAlreadyTakenError();
         }
         this.fill(request.getUserName(), 4);
@@ -133,6 +134,7 @@ public class ServerFacade{
         int newPeopleQuantity = 0;
 
 
+
         if (generations == null){
             generations = 4;
         }
@@ -147,6 +149,8 @@ public class ServerFacade{
                 throw new IllegalArgumentException();
             }
              // FIRST DELETE ALL THE PEOPLE BELONGING TO THE PERSON requesting
+             personDAO.deleteUserPeople(username);
+
             LocationGenerator locations = decoder.toLocationGenerator("data/json/locations.json");
             NameGenerator boyNames = decoder.toNameGenerator("data/json/mnames.json");
             NameGenerator girlNames = decoder.toNameGenerator("data/json/fnames.json");
