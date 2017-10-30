@@ -14,11 +14,11 @@ public class LoginRequest{
      *
      * @param jsonString String holding json contents of object.
      */
-    
+
     public LoginRequest(String jsonString){
     }
 
-    public String getUserName(){
+    public String getUsername(){
         return userName;
     }
 

@@ -17,9 +17,12 @@ fi
 if [ "$COMMAND" == compile-tests ]
 then
     javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
-#    javac -d . -cp .:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar test/*.java
 fi
 
+if [ "$COMMAND" == clean ]
+then
+    rm -rf familyserver/
+fi
 # Run Tests command
 if [ "$COMMAND" == run-tests ]
 then

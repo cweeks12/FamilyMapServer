@@ -2,6 +2,7 @@ package familyserver.util;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class that helps with generation of names for family history.
@@ -32,7 +33,8 @@ public class NameGenerator{
      */
 
     public String getRandomName(){
-        return null;
+        Random rand = new Random();
+        return data.get(rand.nextInt(data.size()));
     }
 
 }

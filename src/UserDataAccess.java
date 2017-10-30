@@ -43,7 +43,7 @@ public class UserDataAccess{
         dbName = "jdbc:sqlite:"+databasePath;
     }
 
-    /** 
+    /**
      * Adds a new user to the database. Also assigns a unique ID to the user created.
      *
      * @param newUser The request with the information to create a user.
@@ -84,8 +84,47 @@ public class UserDataAccess{
         return newId;
     }
 
+    /**
+     * Adds a new user to the database. Also assigns a unique ID to the user created.
+     *
+     * @param newUser The user object with the information to create a user.
+     * @return The ID generated for the new user in the database.
+     */
+    public String createNewUser(User newUser) throws InternalServerError{
 
-    /** 
+        try (Connection connection = DriverManager.getConnection(dbName)){
+
+            String insert = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+            try{
+                PreparedStatement stmt = connection.prepareStatement(insert);
+                stmt.setString(1, newUser.getUsername());
+                stmt.setString(2, newUser.getPassword());
+                stmt.setString(3, newUser.getEmail());
+                stmt.setString(4, newUser.getFirstName());
+                stmt.setString(5, newUser.getLastName());
+                stmt.setString(6, newUser.getGender());
+                stmt.setString(7, newUser.getId());
+
+                stmt.executeUpdate();
+                stmt.close();
+            }
+            catch(SQLException e){
+                 throw new InternalServerError("Error Updating the fields and doing the update.");
+            }
+
+        }
+
+        catch(SQLException e){
+             throw new InternalServerError("The connection to database failed.");
+        }
+
+        return newUser.getId();
+    }
+
+
+    /**
      * Queries the database and returns the User object form the username.
      *
      * @param userName The username to look up in the database.
@@ -242,4 +281,4 @@ public class UserDataAccess{
         }
     }
 
-} 
+}

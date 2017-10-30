@@ -16,7 +16,10 @@ public class EventsResponse{
      *
      * @param events A list of events to return in the response.
      */
-    
+
     public EventsResponse(List<Event> events){
+        for (Event e : events){
+            data.add(new EventResponse(e));
+        }
     }
 }

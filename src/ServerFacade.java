@@ -1,8 +1,13 @@
-package familyserver;
+package familyserver.handler;
 
-import familyserver.model.AuthToken;
+import familyserver.access.*;
+import familyserver.error.*;
+import familyserver.model.*;
 import familyserver.request.*;
 import familyserver.response.*;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Interface for the server to interact with everything in the
@@ -13,6 +18,18 @@ import familyserver.response.*;
  */
 public class ServerFacade{
 
+    AuthTokenDataAccess authDAO;
+    EventDataAccess eventDAO;
+    PersonDataAccess personDAO;
+    UserDataAccess userDAO;
+
+    ServerFacade(String databasePath){
+        authDAO = new AuthTokenDataAccess(databasePath);
+        eventDAO = new EventDataAccess(databasePath);
+        personDAO = new PersonDataAccess(databasePath);
+        userDAO = new UserDataAccess(databasePath);
+    }
+
 
     /**
      * Registers a new user in the database.
@@ -21,7 +38,7 @@ public class ServerFacade{
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse register(RegisterRequest request){
+    public LoginResponse register(RegisterRequest request) throws UsernameAlreadyTakenError{
         return null;
     }
 
@@ -33,8 +50,21 @@ public class ServerFacade{
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse login(LoginRequest request){
-        return null;
+    public LoginResponse login(LoginRequest request) throws InternalServerError, NoResultsFoundError{
+
+        User loggingInUser = null;
+        String newToken = null;
+        try {
+            loggingInUser = userDAO.getUserByUsername(request.getUsername());
+            if (!loggingInUser.getPassword().equals(request.getPassword())){
+                throw new NoResultsFoundError();
+            }
+            newToken = authDAO.newAuthToken(loggingInUser.getUsername());
+        }
+        catch(IllegalArgumentException e){
+            throw new InternalServerError(e.getMessage());
+        }
+        return new LoginResponse(newToken, loggingInUser.getUsername(), loggingInUser.getId());
     }
 
 
@@ -45,7 +75,21 @@ public class ServerFacade{
      */
 
     public MessageResponse clear(){
-        return null;
+        String message = "Clear succeeded.";
+        try{
+            authDAO.deleteAllAuthTokens();
+            eventDAO.deleteAllEvents();
+            personDAO.deleteAllPeople();
+            userDAO.deleteAllUsers();
+        }
+        catch(InternalServerError e){
+            message = "FAIL. " + e.getMessage();
+        }
+        catch(IllegalArgumentException e){
+            message = "FAIL. Illegal argument passed in.";
+        }
+
+        return new MessageResponse(message);
     }
 
 
@@ -57,8 +101,34 @@ public class ServerFacade{
      * @return A message response telling whether or not the request worked.
      */
 
-    public MessageResponse fill(String username, int generations){
-        return null;
+    public MessageResponse fill(String username, Integer generations){
+        User userMakingRequest = null;
+        String message = null;
+        if (generations == null){
+            generations = 4;
+        }
+
+        try {
+            if (generations < 1){
+                throw new IllegalArgumentException();
+            }
+
+            int personsMade = 0;
+            int eventsMade = 0;
+
+            userMakingRequest = userDAO.getUserByUsername(username);
+            if (userMakingRequest == null){
+                throw new IllegalArgumentException();
+            }
+            message = "Successfully added " + personsMade + " persons and " + eventsMade + " events to the database.";
+        }
+        catch(InternalServerError e){
+            message = "FAIL. " + e.getMessage();
+        }
+        catch(IllegalArgumentException e){
+            message = "FAIL. Illegal value passed in.";
+        }
+        return new MessageResponse(message);
     }
 
 
@@ -70,7 +140,33 @@ public class ServerFacade{
      */
 
     public MessageResponse load(LoadRequest request){
-        return null;
+        String message = null;
+
+        int userCount = 0;
+        int personCount = 0;
+        int eventCount = 0;
+
+        try {
+            for (User u : request.getUsers()){
+                userDAO.createNewUser(u);
+            }
+            for (Person p : request.getPersons()){
+                personDAO.createNewPerson(p);
+            }
+            for (Event e : request.getEvents()){
+                eventDAO.createNewEvent(e);
+            }
+            message = "Successfully added " + userCount + " users, " + personCount + " persons, and " + eventCount + " events into the database.";
+        }
+
+        catch(InternalServerError e){
+            message = "FAIL. " + e.getMessage();
+        }
+        catch(IllegalArgumentException e){
+            message = "FAIL. Illegal value passed in.";
+        }
+
+        return new MessageResponse(message);
     }
 
 
@@ -82,8 +178,23 @@ public class ServerFacade{
      * @return A PersonResponse object with the requested person's information in it.
      */
 
-    public PersonResponse person(AuthToken token, String personId){
-        return null;
+    public PersonResponse person(AuthToken token, String personId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+        String user = null;
+        Person personToReturn = null;
+        try {
+            user = authDAO.userForToken(token.getToken());
+            if (user == null){
+                throw new InvalidAuthTokenError();
+            }
+            personToReturn = personDAO.getPersonById(personId);
+            if (personToReturn == null){
+                throw new NoResultsFoundError();
+            }
+        }
+        catch(IllegalArgumentException e){
+            throw new InternalServerError(e.getMessage());
+        }
+        return new PersonResponse(personToReturn);
     }
 
 
@@ -94,8 +205,25 @@ public class ServerFacade{
      * @return A PeopleResponse object with all of the data of all of the people associated with the requesting user.
      */
 
-    public PeopleResponse people(AuthToken token){
-        return null;
+
+    public PeopleResponse people(AuthToken token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+        String user;
+        List<Person> returnedPeople = null;
+        try {
+            user = authDAO.userForToken(token.getToken());
+            if (user == null){
+                throw new InvalidAuthTokenError();
+            }
+
+            returnedPeople = personDAO.getAllPeople(user);
+            if (returnedPeople == null){
+                throw new NoResultsFoundError();
+            }
+        }
+        catch(IllegalArgumentException e){
+            throw new InternalServerError(e.getMessage());
+        }
+        return new PeopleResponse(returnedPeople);
     }
 
 
@@ -107,8 +235,24 @@ public class ServerFacade{
      * @return An EventResponse object with the requested event's information in it.
      */
 
-    public EventResponse event(AuthToken token, String eventId){
-        return null;
+    public EventResponse event(AuthToken token, String eventId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+
+        String user = null;
+        Event eventToReturn = null;
+        try {
+            user = authDAO.userForToken(token.getToken());
+            if (user == null){
+                throw new InvalidAuthTokenError();
+            }
+            eventToReturn = eventDAO.getEventById(eventId);
+            if (eventToReturn == null){
+                throw new NoResultsFoundError();
+            }
+        }
+        catch(IllegalArgumentException e){
+            throw new InternalServerError(e.getMessage());
+        }
+        return new EventResponse(eventToReturn);
     }
 
     /**
@@ -118,8 +262,24 @@ public class ServerFacade{
      * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
      */
 
-    public EventsResponse events(AuthToken token){
-        return null;
+    public EventsResponse events(AuthToken token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+        String user;
+        List<Event> returnedEvents = null;
+        try {
+            user = authDAO.userForToken(token.getToken());
+            if (user == null){
+                throw new InvalidAuthTokenError();
+            }
+
+            returnedEvents = eventDAO.getAllEvents(user);
+            if (returnedEvents == null){
+                throw new NoResultsFoundError();
+            }
+        }
+        catch(IllegalArgumentException e){
+            throw new InternalServerError(e.getMessage());
+        }
+        return new EventsResponse(returnedEvents);
     }
 
 }

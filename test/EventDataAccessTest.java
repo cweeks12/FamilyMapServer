@@ -4,7 +4,6 @@ import familyserver.access.EventDataAccess;
 import familyserver.model.Event;
 import familyserver.model.Location;
 import familyserver.error.InternalServerError;
-import familyserver.error.EventNotFoundError;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.sql.Connection;
@@ -24,7 +23,7 @@ public class EventDataAccessTest{
     public void setup(){
         try{
             Class.forName("org.sqlite.JDBC");
-        } 
+        }
         catch (ClassNotFoundException e){
             fail();
         }
@@ -35,7 +34,7 @@ public class EventDataAccessTest{
         try{
             connection = DriverManager.getConnection(dbName);
         }catch(SQLException e){
-            
+
             System.out.println(e.getMessage());
         }
 
@@ -52,7 +51,7 @@ public class EventDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-        } 
+        }
         catch (SQLException e){
             System.out.println("Error creating database");
             System.out.println(e.getMessage());
@@ -76,7 +75,7 @@ public class EventDataAccessTest{
         assertTrue(foundEvent.equals(event));
     }
 
-    @Test 
+    @Test
     public void searchingForNullEventById(){
         // This test makes sure that if you search for null, you get null back
         Event foundEvent = null;
@@ -125,7 +124,7 @@ public class EventDataAccessTest{
     }
 
     @Test
-    public void testDroppingAllEvents(){ 
+    public void testDroppingAllEvents(){
         // This test deletes everyone from the database, then checks for the original event from @Before, should return a null event.
 
         Event foundEvent = null;

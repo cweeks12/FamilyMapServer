@@ -2,6 +2,7 @@ package familyserver.response;
 
 import familyserver.model.AuthToken;
 import familyserver.model.Event;
+import familyserver.model.Location;
 
 /** Class that holds everything for an individual event response. */
 
@@ -25,15 +26,27 @@ public class EventResponse{
     /** Type of event (marriage, baptism, birth, death). */
     private String eventType;
     /** Year it occurred. */
-    private String year;
+    private int year;
 
     /**
      * Constructor that creates the object to return in response to the GET request.
      *
      * @param event The event you're returning in response to the GET request
      */
-    
+
     public EventResponse(Event event){
+        Location loc = event.getEventLocation();
+
+        descendant = event.getUsername();
+        eventId = event.getId();
+        personId = event.getPersonId();
+        eventType = event.getEventType();
+        year = event.getYear();
+
+        latitude = loc.getLatitude();
+        longitude = loc.getLongitude();
+        country = loc.getCountry();
+        city = loc.getCity();
     }
 
     public void setDescendant(String descendant){
@@ -60,7 +73,7 @@ public class EventResponse{
     public void setEventType(String eventType){
         this.eventType = eventType;
     }
-    public void setYear(String year){
+    public void setYear(int year){
         this.year = year;
     }
 }

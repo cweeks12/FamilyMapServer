@@ -16,7 +16,10 @@ public class PeopleResponse{
      *
      * @param people A list of people to return in the response.
      */
-    
+
     public PeopleResponse(List<Person> people){
+        for (Person p : people){
+            data.add(new PersonResponse(p));
+        }
     }
 }

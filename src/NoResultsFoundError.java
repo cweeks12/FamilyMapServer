@@ -1,20 +1,20 @@
 package familyserver.error;
 
-/** Custom exception thrown when requesting data not owned by the requestee.
+/** Custom exception thrown with no results found.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
  * @version 1.0
  */
 
-public class NotYourDataError extends Exception{
+public class NoResultsFoundError extends Exception{
 
     /** Standard constructor; calls super(). */
-    public NotYourDataError(){
+    public NoResultsFoundError(){
         super();
     }
 
     /** Calls super() with message. */
-    public NotYourDataError(String message){
+    public NoResultsFoundError(String message){
         super(message);
     }
 }

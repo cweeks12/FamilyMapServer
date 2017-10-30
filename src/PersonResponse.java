@@ -38,8 +38,17 @@ public class PersonResponse{
      *
      * @param person The person you're returning in response to the GET request
      */
-    
+
     public PersonResponse(Person person){
+        personId = person.getId();
+        descendant = person.getDescendant();
+        firstName = person.getFirstName();
+        lastName = person.getLastName();
+        gender = person.getGender();
+        father = person.getFather();
+        mother = person.getMother();
+        spouse = person.getSpouse();
+
     }
 
     public void setPersonId(String personId){

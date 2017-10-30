@@ -3,6 +3,7 @@ package familyserver.util;
 import familyserver.model.Location;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Stores and generates locations for family generation.
@@ -23,9 +24,9 @@ public class LocationGenerator{
      * @param inputJson A string holding all of the json to be decoded.
      */
 
-    public LocationGenerator(String inputJson){
+    public LocationGenerator(){
     }
-    
+
 
     /** Gets a random location to use. This is to help generate random family data.
      *
@@ -33,17 +34,7 @@ public class LocationGenerator{
      */
 
     public Location getRandomLocation(){
-        return null;
+        Random rand = new Random();
+        return data.get(rand.nextInt(data.size()));
     }
-
-    /** Gets a nearby location to use. This helps generate realistic family data.
-     *
-     * @param loc A location that you want to find a nearby location to.
-     * @return Location near or equal to the location passed in.
-     */
-
-    public Location getNearbyLocation(Location loc){
-        return null;
-    }
-    
 }

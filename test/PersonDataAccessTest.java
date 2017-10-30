@@ -3,7 +3,6 @@ package familyserver.test;
 import familyserver.access.PersonDataAccess;
 import familyserver.model.Person;
 import familyserver.error.InternalServerError;
-import familyserver.error.PersonNotFoundError;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ public class PersonDataAccessTest{
     public void setup(){
         try{
             Class.forName("org.sqlite.JDBC");
-        } 
+        }
         catch (ClassNotFoundException e){
             fail();
         }
@@ -34,7 +33,7 @@ public class PersonDataAccessTest{
         try{
             connection = DriverManager.getConnection(dbName);
         }catch(SQLException e){
-            
+
             System.out.println(e.getMessage());
         }
 
@@ -51,7 +50,7 @@ public class PersonDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-        } 
+        }
         catch (SQLException e){
             System.out.println("Error creating database");
             System.out.println(e.getMessage());
@@ -75,7 +74,7 @@ public class PersonDataAccessTest{
         assertTrue(foundPerson.equals(person));
     }
 
-    @Test 
+    @Test
     public void searchingForNullPersonById(){
         // This test makes sure that if you search for null, you get null back
         Person foundPerson = null;
@@ -124,7 +123,7 @@ public class PersonDataAccessTest{
     }
 
     @Test
-    public void testDroppingAllPeople(){ 
+    public void testDroppingAllPeople(){
         // This test deletes everyone from the database, then checks for the original person from @Before, should return a null person.
 
         Person foundPerson = null;
