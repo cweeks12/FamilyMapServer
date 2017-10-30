@@ -41,6 +41,24 @@ public class UserDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+
+        Connection connection = null;
+        try{
+            connection = DriverManager.getConnection(dbName);
+
+            PreparedStatement stmt = connection.prepareStatement("DROP TABLE IF EXISTS user");
+            stmt.executeUpdate();
+            stmt.close();
+
+            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL)");
+            stmt.executeUpdate();
+            stmt.close();
+
+        }
+        catch (SQLException e){
+            System.out.println("Error creating database");
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -72,7 +90,7 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error Updating the fields and doing the update.");
+                 throw new InternalServerError("Error Updating the fields and doing the update." + e.getMessage());
             }
 
         }

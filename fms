@@ -4,19 +4,19 @@ COMMAND=$1
 # Compilation command
 if [ "$COMMAND" == compile ]
 then
-    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar src/*
+    javac -d . -cp .:jar/json-20160212.jar:jar/gson-2.8.0.jar:jar/sqlite-jdbc-3.7.2.jar src/*
 fi
 
 # Run command
 if [ "$COMMAND" == run ]
 then
-    echo Run
+    java -cp .:jar/json-20160212.jar:jar/gson-2.8.0.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar familyserver.handler.ServerFacade
 fi
 
 # Compile Tests command
 if [ "$COMMAND" == compile-tests ]
 then
-    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
+    javac -d . -cp .:jar/json-20160212.jar:jar/gson-2.8.0.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
 fi
 
 if [ "$COMMAND" == clean ]
@@ -26,6 +26,6 @@ fi
 # Run Tests command
 if [ "$COMMAND" == run-tests ]
 then
-    javac -d . -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
-    java -cp .:jar/json-20160212.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar familyserver.test.TestDriver
+    javac -d . -cp .:jar/json-20160212.jar:jar/gson-2.8.0.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar src/*.java test/*.java
+    java -cp .:jar/json-20160212.jar:jar/gson-2.8.0.jar:jar/sqlite-jdbc-3.7.2.jar:jar/hamcrest-all-1.3.jar:jar/junit-4.12.jar familyserver.test.TestDriver
 fi

@@ -21,10 +21,10 @@ public class LocationGenerator{
     /**
      * Fills the LocationGenerator with the data from the JSON.
      *
-     * @param inputJson A string holding all of the json to be decoded.
+     * @param inputFile A file holding all of the json to be decoded.
      */
 
-    public LocationGenerator(){
+    public LocationGenerator(String inputFile){
     }
 
 

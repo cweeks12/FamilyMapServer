@@ -3,6 +3,8 @@ package familyserver.util;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import familyserver.util.Decoder;
+
 
 /**
  * Class that helps with generation of names for family history.
@@ -19,10 +21,9 @@ public class NameGenerator{
 
     /** Builds the object to get the names from.
      *
-     * @param inputJson A JSON string that holds all the data to fill the names.
      */
 
-    public NameGenerator(String inputJson){
+    public NameGenerator(){
     }
 
 

@@ -43,7 +43,7 @@ public class Person{
      * @return Whether or not the person is the same, based on ID
      */
 
-    @Override 
+    @Override
     public boolean equals(Object o){
         if (o == null){
             return false;
@@ -71,18 +71,21 @@ public class Person{
         sb.append(" Desc: " + descendant);
         sb.append(" Name: " + firstName + " " + lastName);
         sb.append(" Gender: " + gender);
+        sb.append(" Spouse: " + spouse);
+        sb.append(" Father: " + father);
+        sb.append(" Mother: " + mother);
 
         return sb.toString();
     }
 
 
-    public Person(String id, 
-                    String descendant, 
-                    String firstName, 
-                    String lastName, 
-                    String gender, 
-                    String father, 
-                    String mother, 
+    public Person(String id,
+                    String descendant,
+                    String firstName,
+                    String lastName,
+                    String gender,
+                    String father,
+                    String mother,
                     String spouse) throws IllegalArgumentException{
 
         gender = gender.toUpperCase();
@@ -102,7 +105,7 @@ public class Person{
         this.father = father;
         this.mother = mother;
         this.spouse = spouse;
-    } 
+    }
 
     /*
      *

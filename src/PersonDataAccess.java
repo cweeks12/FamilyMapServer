@@ -40,9 +40,26 @@ public class PersonDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+        Connection connection = null;
+        try{
+            connection = DriverManager.getConnection(dbName);
+
+            PreparedStatement stmt = connection.prepareStatement("DROP TABLE IF EXISTS person");
+            stmt.executeUpdate();
+            stmt.close();
+
+            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS person (personId text PRIMARY KEY, descendant text NOT NULL, firstName text NOT NULL, lastName text NOT NULL, gender text NOT NULL, father text, mother text, spouse text)");
+            stmt.executeUpdate();
+            stmt.close();
+
+        }
+        catch (SQLException e){
+            System.out.println("Error creating database");
+            System.out.println(e.getMessage());
+        }
     }
 
-    /** 
+    /**
      * Adds a new person to the database.
      *
      * @param personToCreate the new person to add to the database.
@@ -75,7 +92,7 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error Updating the fields and doing the update.");
+                 throw new InternalServerError("Error Updating the fields and doing the update." + e.getMessage());
             }
 
         }
@@ -88,7 +105,7 @@ public class PersonDataAccess{
     }
 
 
-    /** 
+    /**
      * Queries the database and returns the Person object from the username.
      *
      * @param personID The unique person ID to get the person from.
@@ -162,7 +179,7 @@ public class PersonDataAccess{
     }
 
 
-    /** 
+    /**
      * Queries the database and returns all Persons that belong to the given user.
      *
      * @param descendant The username that's requesting all their ancestors.
@@ -271,4 +288,4 @@ public class PersonDataAccess{
             throw new InternalServerError("The connection to database failed.");
         }
     }
-} 
+}

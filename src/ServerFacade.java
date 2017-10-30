@@ -5,7 +5,9 @@ import familyserver.error.*;
 import familyserver.model.*;
 import familyserver.request.*;
 import familyserver.response.*;
+import familyserver.util.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -30,6 +32,11 @@ public class ServerFacade{
         userDAO = new UserDataAccess(databasePath);
     }
 
+    public static void main(String[] args) throws Exception{
+        ServerFacade sf = new ServerFacade("hello.db");
+        sf.register(new RegisterRequest("cweeks12", "hi", "connorweeks1@gmail.com", "Connor", "Weeks", "M"));
+        sf.fill("cweeks12",3);
+    }
 
     /**
      * Registers a new user in the database.
@@ -38,8 +45,25 @@ public class ServerFacade{
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse register(RegisterRequest request) throws UsernameAlreadyTakenError{
-        return null;
+    public LoginResponse register(RegisterRequest request) throws UsernameAlreadyTakenError, InternalServerError{
+
+        String newUserId = null;
+        String newToken = null;
+        try{
+            newUserId = userDAO.createNewUser(request);
+            newToken = authDAO.newAuthToken(request.getUserName());
+        }
+
+        catch(IllegalArgumentException e){
+
+        }
+        catch(InternalServerError e){
+            throw new UsernameAlreadyTakenError();
+        }
+        this.fill(request.getUserName(), 4);
+
+
+        return new LoginResponse(newToken, request.getUserName(), newUserId);
     }
 
 
@@ -55,11 +79,11 @@ public class ServerFacade{
         User loggingInUser = null;
         String newToken = null;
         try {
-            loggingInUser = userDAO.getUserByUsername(request.getUsername());
-            if (!loggingInUser.getPassword().equals(request.getPassword())){
+            if (!userDAO.checkLogin(request.getUsername(), request.getPassword())){
                 throw new NoResultsFoundError();
             }
-            newToken = authDAO.newAuthToken(loggingInUser.getUsername());
+            loggingInUser = userDAO.getUserByUsername(request.getUsername());
+            newToken = authDAO.newAuthToken(request.getUsername());
         }
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
@@ -102,31 +126,92 @@ public class ServerFacade{
      */
 
     public MessageResponse fill(String username, Integer generations){
+
+        Decoder decoder = new Decoder();
         User userMakingRequest = null;
         String message = null;
+        int newPeopleQuantity = 0;
+
+
         if (generations == null){
             generations = 4;
         }
+
 
         try {
             if (generations < 1){
                 throw new IllegalArgumentException();
             }
+            User requestingUser = userDAO.getUserByUsername(username);
+            if (requestingUser == null){
+                throw new IllegalArgumentException();
+            }
+             // FIRST DELETE ALL THE PEOPLE BELONGING TO THE PERSON requesting
+            LocationGenerator locations = decoder.toLocationGenerator("data/json/locations.json");
+            NameGenerator boyNames = decoder.toNameGenerator("data/json/mnames.json");
+            NameGenerator girlNames = decoder.toNameGenerator("data/json/fnames.json");
+            NameGenerator lastNames = decoder.toNameGenerator("data/json/snames.json");
+
+            newPeopleQuantity = (int)java.lang.Math.pow(2,(generations+1))-1;
+            Person[] newPeople = new Person[newPeopleQuantity];
+
+
+            newPeople[0] = new Person(requestingUser.getId(), username, requestingUser.getFirstName(), requestingUser.getLastName(), requestingUser.getGender(), null,null,null);
+
+
+            String firstName = null;
+            String lastName = null;
+            String gender = null;
+            for (int i = 1; i < newPeople.length; i++){
+
+                if (i % 2 == 0){
+                    firstName = boyNames.getRandomName();
+                    gender = "M";
+                }
+                else {
+                    firstName = girlNames.getRandomName();
+                    gender = "F";
+                }
+
+                lastName = lastNames.getRandomName();
+
+                newPeople[i] = new Person(Utils.generateId(), username, firstName, lastName, gender, null,null,null);
+            }
+
+            // At this point, you have all of the people you need, you just need to link them together in a family tree
+            for (int i = 1; i < newPeople.length; i+=2){
+                // A beautiful wedding
+                newPeople[i].setSpouse(newPeople[i+1].getId());
+                newPeople[i+1].setSpouse(newPeople[i].getId());
+            }
+
+            int currentParentIndex = 1;
+            for(int i = 0; currentParentIndex < newPeople.length; i++, currentParentIndex+=2){
+                // And the hearts shall turn to their fathers
+                newPeople[i].setMother(newPeople[currentParentIndex].getId());
+                newPeople[i].setFather(newPeople[currentParentIndex+1].getId());
+            }
+
+            System.out.println(newPeople.length);
+            for (Person p : newPeople){
+                personDAO.createNewPerson(p);
+                System.out.println(p);
+            }
 
             int personsMade = 0;
             int eventsMade = 0;
 
-            userMakingRequest = userDAO.getUserByUsername(username);
-            if (userMakingRequest == null){
-                throw new IllegalArgumentException();
-            }
             message = "Successfully added " + personsMade + " persons and " + eventsMade + " events to the database.";
         }
         catch(InternalServerError e){
             message = "FAIL. " + e.getMessage();
+            System.out.println(message);
         }
         catch(IllegalArgumentException e){
             message = "FAIL. Illegal value passed in.";
+        }
+        catch(IOException e){
+            message = "Error reading JSON to generate names";
         }
         return new MessageResponse(message);
     }
