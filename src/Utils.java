@@ -3,14 +3,10 @@ package familyserver.util;
 import java.lang.StringBuilder;
 import java.util.Random;
 
+/** Class that contains any functions needed for the server to perform. */
 public class Utils{
 
-    public static void main(String[] args){
-        for (int i = 0; i < 20; i++){
-            System.out.println(generateId());
-        }
-    }
-
+    /** Generates random 8-hex-digit ID's for general use in the system. */
     public static String generateId(){
         StringBuilder token = new StringBuilder();
         Random random = new Random();

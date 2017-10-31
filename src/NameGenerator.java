@@ -18,15 +18,6 @@ public class NameGenerator{
     /** List that holds all the names to choose from. */
     private List<String> data;
 
-
-    /** Builds the object to get the names from.
-     *
-     */
-
-    public NameGenerator(){
-    }
-
-
     /**
      * Returns a random name from the list of names.
      *

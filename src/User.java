@@ -34,6 +34,7 @@ public class User{
     /** The user's unique id number. */
     private String personID;
 
+    /** Constructor that builds the user based on the parts given. */
     public User( String username,
                     String password,
                     String email,
@@ -42,9 +43,14 @@ public class User{
                     String gender,
                     String id) throws IllegalArgumentException{
 
-        if (username == null || password == null || email == null || firstName == null
-                || lastName == null || gender == null || id == null){
-            throw new IllegalArgumentException();
+        if (username == null
+            || password == null
+            || email == null
+            || firstName == null
+            || lastName == null
+            || gender == null
+            || id == null){
+                throw new IllegalArgumentException();
         }
 
         if (!Pattern.matches("\\p{Alpha}\\w*@\\w+\\.\\w{3,}", email)){

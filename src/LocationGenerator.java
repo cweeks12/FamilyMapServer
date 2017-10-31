@@ -17,17 +17,6 @@ public class LocationGenerator{
     /** Holds the locations to choose from. */
     private List<Location> data;
 
-
-    /**
-     * Fills the LocationGenerator with the data from the JSON.
-     *
-     * @param inputFile A file holding all of the json to be decoded.
-     */
-
-    public LocationGenerator(String inputFile){
-    }
-
-
     /** Gets a random location to use. This is to help generate random family data.
      *
      * @return Location randomly selected.

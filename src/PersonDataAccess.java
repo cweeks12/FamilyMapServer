@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Accesses the database for Person objects.
  *
@@ -20,10 +21,10 @@ import java.util.List;
 
 public class PersonDataAccess{
 
-    // Driver string for the class
+    /** Driver string for the class. */
     private final String driver = "org.sqlite.JDBC";
 
-    // Holds the name of the database
+    /** Holds the name of the database. */
     private String dbName;
 
     /** Builds a new user data access object to interact with user database.
@@ -40,11 +41,22 @@ public class PersonDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+
+        String createTable = "CREATE TABLE IF NOT EXISTS person " +
+                                "(personId TEXT PRIMARY KEY, " +
+                                "descendant TEXT NOT NULL, " +
+                                "firstName TEXT NOT NULL, " +
+                                "lastName TEXT NOT NULL, " +
+                                "gender TEXT NOT NULL, " +
+                                "father TEXT, " +
+                                "mother TEXT, " +
+                                "spouse TEXT)";
+
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(dbName);
 
-            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS person (personId text PRIMARY KEY, descendant text NOT NULL, firstName text NOT NULL, lastName text NOT NULL, gender text NOT NULL, father text, mother text, spouse text)");
+            PreparedStatement stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -90,11 +102,11 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error updating the fields and doing the update." + e.getMessage());
+                error = "Error updating the fields and doing the update." + e.getMessage();
+                throw new InternalServerError(error);
             }
 
         }
-
         catch(SQLException e){
              throw new InternalServerError("The connection to database failed.");
         }
@@ -173,7 +185,14 @@ public class PersonDataAccess{
              throw new InternalServerError("Error closing connection." + e.getMessage());
         }
 
-        return new Person(id, descendant, firstName, lastName, gender, father, mother, spouse);
+        return new Person(id,
+                          descendant,
+                          firstName,
+                          lastName,
+                          gender,
+                          father,
+                          mother,
+                          spouse);
     }
 
 
@@ -234,7 +253,14 @@ public class PersonDataAccess{
                 father = queryResult.getString("father");
                 mother = queryResult.getString("mother");
                 spouse = queryResult.getString("spouse");
-                listOfPeople.add(new Person(id, descendant, firstName, lastName, gender, father, mother, spouse));
+                listOfPeople.add(new Person(id,
+                                           descendant,
+                                           firstName,
+                                           lastName,
+                                           gender,
+                                           father,
+                                           mother,
+                                           spouse));
             }
         }
         catch (SQLException e){
@@ -249,7 +275,8 @@ public class PersonDataAccess{
             connection = null;
         }
         catch (SQLException e){
-            throw new InternalServerError("Error closing the connection to database." + e.getMessage());
+            String error = "Error closing the connection to database." + e.getMessage();
+            throw new InternalServerError(error);
         }
 
         // If nobody was added to the list, return a null object
@@ -281,7 +308,6 @@ public class PersonDataAccess{
             }
 
         }
-
         catch(SQLException e){
             throw new InternalServerError("The connection to database failed.");
         }
@@ -307,7 +333,6 @@ public class PersonDataAccess{
             }
 
         }
-
         catch(SQLException e){
             throw new InternalServerError("The connection to database failed.");
         }

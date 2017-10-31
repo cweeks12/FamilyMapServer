@@ -5,12 +5,14 @@ import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 /**
  * Contains all information about one person.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
  * @version 1.0
  */
+
 public class Person{
 
     /** Unique identifier for this person */
@@ -55,7 +57,9 @@ public class Person{
 
         Person p = (Person) o;
 
-        return this.personID.equals(p.getId()) && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
+        return this.personID.equals(p.getId())
+                && this.firstName.equals(p.getFirstName())
+                && this.lastName.equals(p.getLastName());
     }
 
     /**
@@ -93,8 +97,12 @@ public class Person{
             throw new IllegalArgumentException("Gender must be 'F' or 'M'.");
         }
 
-        if (id == null || descendant == null || firstName == null || lastName == null || gender == null){
-            throw new IllegalArgumentException();
+        if (id == null
+            || descendant == null
+            || firstName == null
+            || lastName == null
+            || gender == null){
+                throw new IllegalArgumentException();
         }
 
         this.personID = id;

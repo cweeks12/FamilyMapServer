@@ -1,6 +1,7 @@
 package familyserver.model;
 
 import familyserver.response.EventResponse;
+
 /**
  * Contains all information about events
  *
@@ -24,9 +25,21 @@ public class Event{
     private String year;
 
 
-    public Event(String id, String username, String personId, Location eventLocation, String eventType, String year) throws IllegalArgumentException{
+    /** Builds an event given all of the individual pieces.*/
+    public Event(String id,
+                 String username,
+                 String personId,
+                 Location eventLocation,
+                 String eventType,
+                 String year) throws IllegalArgumentException{
 
-        if (id == null || username == null || personId == null || eventLocation == null || eventType == null || year == null){
+        if (id == null
+            || username == null
+            || personId == null
+            || eventLocation == null
+            || eventType == null
+            || year == null){
+
             throw new IllegalArgumentException();
         }
 
@@ -38,13 +51,23 @@ public class Event{
         this.year = year;
     }
 
+
+    /** Converts an EventResponse to an Event.
+    *
+    * @param response The EventResponse that you want to convert to an event.
+    */
+
     public Event(EventResponse response){
         this.id = response.eventID;
         this.username = response.descendant;
         this.personId = response.personID;
-        this.eventLocation = new Location(response.country, response.city, response.latitude, response.longitude);
         this.eventType = response.eventType;
         this.year = response.year;
+
+        this.eventLocation = new Location(response.country,
+                                          response.city,
+                                          response.latitude,
+                                          response.longitude);
     }
 
     @Override
@@ -59,7 +82,12 @@ public class Event{
 
         Event e = (Event) o;
 
-        return this.id.equals(e.getId()) && this.username.equals(e.getUsername()) && this.personId.equals(e.getPersonId()) && this.eventLocation.equals(e.getEventLocation()) && this.eventType.equals(e.getEventType()) && this.year == e.getYear();
+        return this.id.equals(e.getId())
+                && this.username.equals(e.getUsername())
+                && this.personId.equals(e.getPersonId())
+                && this.eventLocation.equals(e.getEventLocation())
+                && this.eventType.equals(e.getEventType())
+                && this.year.equals(e.getYear());
     }
 
     /*

@@ -21,22 +21,29 @@ import java.util.Random;
  */
 public class ServerFacade{
 
+    /** The access to the authorization tokens.*/
     AuthTokenDataAccess authDAO;
+
+    /** The access to the events.*/
     EventDataAccess eventDAO;
+
+    /** The access to the people.*/
     PersonDataAccess personDAO;
+
+    /** The access to the users.*/
     UserDataAccess userDAO;
+
+
+    /** Constructs a new ServerFacade for use.
+    *
+    * @param databasePath The path to the databases that the accessors will use.
+    */
 
     public ServerFacade(String databasePath){
         authDAO = new AuthTokenDataAccess(databasePath);
         eventDAO = new EventDataAccess(databasePath);
         personDAO = new PersonDataAccess(databasePath);
         userDAO = new UserDataAccess(databasePath);
-    }
-
-    public static void main(String[] args) throws Exception{
-        ServerFacade sf = new ServerFacade("hello.db");
-        sf.register(new RegisterRequest("cweeks12", "hi", "connorweeks1@gmail.com", "Connor", "Weeks", "M"));
-        sf.fill("cweeks12",9);
     }
 
     /**
@@ -61,7 +68,6 @@ public class ServerFacade{
 
         this.fill(request.getUserName(), 4);
 
-
         return new LoginResponse(newToken, request.getUserName(), newUserId);
     }
 
@@ -73,7 +79,8 @@ public class ServerFacade{
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse login(LoginRequest request) throws InternalServerError, NoResultsFoundError{
+    public LoginResponse login(LoginRequest request)
+                throws InternalServerError, NoResultsFoundError{
 
         User loggingInUser = null;
         String newToken = null;
@@ -87,6 +94,7 @@ public class ServerFacade{
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
         }
+
         return new LoginResponse(newToken, loggingInUser.getUsername(), loggingInUser.getId());
     }
 
@@ -130,24 +138,23 @@ public class ServerFacade{
         String message = null;
         int newPeopleQuantity = 0;
 
-
-
         if (generations == null){
             generations = 4;
         }
-
 
         try {
             if (generations < 1){
                 throw new IllegalArgumentException();
             }
+
             User requestingUser = userDAO.getUserByUsername(username);
+
             if (requestingUser == null){
                 throw new IllegalArgumentException();
             }
-             // FIRST DELETE ALL THE PEOPLE BELONGING TO THE PERSON requesting
-             personDAO.deleteUserPeople(username);
-             eventDAO.deleteUserEvents(username);
+
+            personDAO.deleteUserPeople(username);
+            eventDAO.deleteUserEvents(username);
 
             LocationGenerator locations = decoder.toLocationGenerator("data/json/locations.json");
             NameGenerator boyNames = decoder.toNameGenerator("data/json/mnames.json");
@@ -157,13 +164,19 @@ public class ServerFacade{
             newPeopleQuantity = (int)java.lang.Math.pow(2,(generations+1))-1;
             Person[] newPeople = new Person[newPeopleQuantity];
 
-
-            newPeople[0] = new Person(requestingUser.getId(), username, requestingUser.getFirstName(), requestingUser.getLastName(), requestingUser.getGender(), null,null,null);
-
+            newPeople[0] = new Person(requestingUser.getId(),
+                                        username,
+                                        requestingUser.getFirstName(),
+                                        requestingUser.getLastName(),
+                                         requestingUser.getGender(),
+                                         null,
+                                         null,
+                                         null);
 
             String firstName = null;
             String lastName = null;
             String gender = null;
+
             for (int i = 1; i < newPeople.length; i++){
 
                 if (i % 2 == 0){
@@ -177,7 +190,14 @@ public class ServerFacade{
 
                 lastName = lastNames.getRandomName();
 
-                newPeople[i] = new Person(Utils.generateId(), username, firstName, lastName, gender, null,null,null);
+                newPeople[i] = new Person(Utils.generateId(),
+                                            username,
+                                            firstName,
+                                            lastName,
+                                            gender,
+                                            null,
+                                            null,
+                                            null);
             }
 
             // At this point, you have all of the people you need, you just need to link them together in a family tree
@@ -211,14 +231,22 @@ public class ServerFacade{
             for (int i = 0; i < newPeople.length; i++){
 
                 int birthYear = baseYear - (currentGeneration * yearsBetweenGenerations) + randomPlusOrMinus(5);
-                eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Birth", Integer.toString(birthYear)));
+                eventDAO.createNewEvent(new Event(Utils.generateId(),
+                                                    username,
+                                                    newPeople[i].getId(),
+                                                    locations.getRandomLocation(),
+                                                    "Birth",
+                                                    Integer.toString(birthYear)));
                 eventsMade++;
-
-                System.out.println(birthYear);
 
                 int baptismYear = birthYear + baptismAge + randomPlusOrMinus(1);
                 if (baptismYear < currentYear){
-                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Baptism", Integer.toString(baptismYear)));
+                    eventDAO.createNewEvent(new Event(Utils.generateId(),
+                                                        username,
+                                                        newPeople[i].getId(),
+                                                        locations.getRandomLocation(),
+                                                        "Baptism",
+                                                        Integer.toString(baptismYear)));
                     eventsMade++;
                 }
 
@@ -229,7 +257,12 @@ public class ServerFacade{
 
                 int deathYear = birthYear + deathAge + randomPlusOrMinus(15);
                 if (deathYear < currentYear){
-                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Death", Integer.toString(deathYear)));
+                    eventDAO.createNewEvent(new Event(Utils.generateId(),
+                                                        username,
+                                                        newPeople[i].getId(),
+                                                        locations.getRandomLocation(),
+                                                        "Death",
+                                                        Integer.toString(deathYear)));
                     eventsMade++;
                 }
 
@@ -245,14 +278,27 @@ public class ServerFacade{
 
             // More beautiful marriages
             for (int i = 1; i < newPeople.length; i+=2){
+
                 int birthYear = baseYear - (currentGeneration * yearsBetweenGenerations);
                 int marriageYear = birthYear + marriageAge + randomPlusOrMinus(10);
+
                 if (marriageYear < currentYear){
                     Location loc = locations.getRandomLocation();
-                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), loc, "Marriage", Integer.toString(marriageYear)));
-                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i+1].getId(), loc, "Marriage", Integer.toString(marriageYear)));
+                    eventDAO.createNewEvent(new Event(Utils.generateId(),
+                                                        username,
+                                                        newPeople[i].getId(),
+                                                        loc,
+                                                        "Marriage",
+                                                        Integer.toString(marriageYear)));
+                    eventDAO.createNewEvent(new Event(Utils.generateId(),
+                                                        username,
+                                                        newPeople[i+1].getId(),
+                                                        loc,
+                                                        "Marriage",
+                                                        Integer.toString(marriageYear)));
                     eventsMade += 2;
                 }
+
                 if (i >= generationGap){
                     currentGeneration++;
                     generationGap += 2*currentGeneration;
@@ -261,7 +307,8 @@ public class ServerFacade{
 
 
 
-            message = "Successfully added " + newPeopleQuantity + " persons and " + eventsMade + " events to the database.";
+            message = "Successfully added " + newPeopleQuantity + " persons and "
+                                    + eventsMade + " events to the database.";
         }
         catch(InternalServerError e){
             message = "FAIL. " + e.getMessage();
@@ -301,16 +348,21 @@ public class ServerFacade{
                 userDAO.createNewUser(u);
                 userCount++;
             }
+
             for (Person p : request.getPersons()){
                 System.out.println(p);
                 personDAO.createNewPerson(p);
                 personCount++;
             }
+
             for (EventResponse e : request.getEvents()){
                 eventDAO.createNewEvent(new Event(e));
                 eventCount++;
             }
-            message = "Successfully added " + userCount + " users, " + personCount + " persons, and " + eventCount + " events into the database.";
+
+            message = "Successfully added " + userCount + " users, "
+                        + personCount + " persons, and "
+                        + eventCount + " events into the database.";
         }
 
         catch(InternalServerError e){
@@ -332,15 +384,21 @@ public class ServerFacade{
      * @return A PersonResponse object with the requested person's information in it.
      */
 
-    public PersonResponse person(String token, String personId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public PersonResponse person(String token, String personId)
+                throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+
         String user = null;
         Person personToReturn = null;
+
         try {
             user = authDAO.userForToken(token);
+
             if (user == null){
                 throw new InvalidAuthTokenError();
             }
+
             personToReturn = personDAO.getPersonById(personId);
+
             if (personToReturn == null){
                 throw new NoResultsFoundError();
             }
@@ -348,6 +406,7 @@ public class ServerFacade{
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
         }
+
         return new PersonResponse(personToReturn);
     }
 
@@ -360,9 +419,12 @@ public class ServerFacade{
      */
 
 
-    public PeopleResponse people(String token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public PeopleResponse people(String token) throws
+                InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+
         String user;
         List<Person> returnedPeople = null;
+
         try {
             user = authDAO.userForToken(token);
             if (user == null){
@@ -370,6 +432,7 @@ public class ServerFacade{
             }
 
             returnedPeople = personDAO.getAllPeople(user);
+
             if (returnedPeople == null){
                 throw new NoResultsFoundError();
             }
@@ -377,6 +440,7 @@ public class ServerFacade{
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
         }
+
         return new PeopleResponse(returnedPeople);
     }
 
@@ -389,16 +453,20 @@ public class ServerFacade{
      * @return An EventResponse object with the requested event's information in it.
      */
 
-    public EventResponse event(String token, String eventId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public EventResponse event(String token, String eventId)
+            throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
 
         String user = null;
         Event eventToReturn = null;
+
         try {
             user = authDAO.userForToken(token);
             if (user == null){
                 throw new InvalidAuthTokenError();
             }
+
             eventToReturn = eventDAO.getEventById(eventId);
+
             if (eventToReturn == null){
                 throw new NoResultsFoundError();
             }
@@ -406,6 +474,7 @@ public class ServerFacade{
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
         }
+
         return new EventResponse(eventToReturn);
     }
 
@@ -416,9 +485,12 @@ public class ServerFacade{
      * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
      */
 
-    public EventsResponse events(String token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
-        String user;
+    public EventsResponse events(String token)
+            throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+
+        String user = null;
         List<Event> returnedEvents = null;
+
         try {
             user = authDAO.userForToken(token);
             if (user == null){
@@ -426,6 +498,7 @@ public class ServerFacade{
             }
 
             returnedEvents = eventDAO.getAllEvents(user);
+
             if (returnedEvents == null){
                 throw new NoResultsFoundError();
             }
@@ -433,6 +506,7 @@ public class ServerFacade{
         catch(IllegalArgumentException e){
             throw new InternalServerError(e.getMessage());
         }
+
         return new EventsResponse(returnedEvents);
     }
 

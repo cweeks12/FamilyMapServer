@@ -1,8 +1,8 @@
 package familyserver.access;
 
+import familyserver.error.InternalServerError;
 import familyserver.model.User;
 import familyserver.request.RegisterRequest;
-import familyserver.error.InternalServerError;
 import familyserver.util.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,16 +21,18 @@ import java.util.List;
 
 public class UserDataAccess{
 
-    // Driver string for the class
+    /** Driver string for the class. */
     private final String driver = "org.sqlite.JDBC";
 
-    // Holds the name of the database
+    /** Holds the name of the database. */
     private String dbName;
+
 
     /** Builds a new user data access object to interact with user database.
      *
      * @param databasePath Path to the database.
      */
+
     public UserDataAccess(String databasePath){
 
         try{
@@ -42,11 +44,20 @@ public class UserDataAccess{
 
         dbName = "jdbc:sqlite:"+databasePath;
 
+        String createTable = "CREATE TABLE IF NOT EXISTS user " +
+                                "(username TEXT NOT NULL PRIMARY KEY, " +
+                                "password TEXT NOT NULL, " +
+                                "email TEXT NOT NULL, " +
+                                "firstName TEXT NOT NULL, " +
+                                "lastName TEXT NOT NULL, " +
+                                "gender TEXT NOT NULL, " +
+                                "personId TEXT NOT NULL)";
+
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(dbName);
 
-            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL)");
+            PreparedStatement stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -56,6 +67,7 @@ public class UserDataAccess{
             System.out.println(e.getMessage());
         }
     }
+
 
     /**
      * Adds a new user to the database. Also assigns a unique ID to the user created.
@@ -67,10 +79,10 @@ public class UserDataAccess{
     public String createNewUser(RegisterRequest newUser) throws InternalServerError{
 
         String newId = Utils.generateId();
+
         try (Connection connection = DriverManager.getConnection(dbName)){
 
             String insert = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 
             try{
                 PreparedStatement stmt = connection.prepareStatement(insert);
@@ -86,11 +98,10 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error updating the fields and doing the update." + e.getMessage());
+                String error = "Error updating the fields and doing the update." + e.getMessage();
+                throw new InternalServerError(error);
             }
-
         }
-
         catch(SQLException e){
              throw new InternalServerError("The connection to database failed.");
         }
@@ -110,7 +121,6 @@ public class UserDataAccess{
 
             String insert = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-
             try{
                 PreparedStatement stmt = connection.prepareStatement(insert);
                 stmt.setString(1, newUser.getUsername());
@@ -125,11 +135,11 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error updating the fields and doing the update. " + e.getMessage());
+                String error = "Error updating the fields and doing the update." + e.getMessage();
+                throw new InternalServerError(error);
             }
 
         }
-
         catch(SQLException e){
              throw new InternalServerError("The connection to database failed.");
         }
@@ -146,6 +156,7 @@ public class UserDataAccess{
      */
 
     public User getUserByUsername(String userName) throws InternalServerError{
+
         if (userName == null){
             return null;
         }
@@ -218,6 +229,7 @@ public class UserDataAccess{
      */
 
     public boolean checkLogin(String username, String password) throws InternalServerError{
+        
         if (username == null || password == null){
             return false;
         }

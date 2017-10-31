@@ -1,8 +1,7 @@
 package familyserver.access;
 
-import familyserver.error.InvalidAuthTokenError;
+import familyserver.error.*;
 import familyserver.model.AuthToken;
-import familyserver.error.InternalServerError;
 import familyserver.util.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,10 +20,10 @@ import java.util.List;
 
 public class AuthTokenDataAccess{
 
-    // Driver string for the class
+    /** Driver string for the class. */
     private final String driver = "org.sqlite.JDBC";
 
-    // Holds the name of the database
+    /** Holds the name of the database. */
     private String dbName;
     private int expiry;
 
@@ -42,11 +41,14 @@ public class AuthTokenDataAccess{
         }
 
         dbName = "jdbc:sqlite:"+databasePath;
+        String createTable = "CREATE TABLE IF NOT EXISTS authToken " +
+                             "(authToken TEXT NOT NULL PRIMARY KEY, " +
+                             "username TEXT NOT NULL)";
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(dbName);
 
-            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL)");
+            PreparedStatement stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -83,7 +85,6 @@ public class AuthTokenDataAccess{
             catch(SQLException e){
                  throw new InternalServerError("Error Updating the fields and doing the update.");
             }
-
         }
 
         catch(SQLException e){
@@ -227,9 +228,7 @@ public class AuthTokenDataAccess{
             catch(SQLException e){
                 throw new InternalServerError("Error querying the database.");
             }
-
         }
-
         catch(SQLException e){
             throw new InternalServerError("The connection to database failed.");
         }

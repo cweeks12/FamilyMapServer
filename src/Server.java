@@ -31,7 +31,7 @@ public class Server{
         try{
     	   server.startServer(Integer.parseInt(args[0]));
         }
-        catch (NumberFormatException){
+        catch (NumberFormatException e){
             System.out.println("You must put a valid number in for the port number");
         }
     }

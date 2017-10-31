@@ -20,14 +20,8 @@ public class Location{
     /** Longitude of the location */
     private float longitude;
 
-    /** Constructor that builds a location based on a JSON string.
-     *
-     * @param jsonString A JSON string that contains the information for Location.
-     */
 
-    public Location(String jsonString){
-    }
-
+    /** Constructor that takes all necessary members as parameters. */
     public Location(String country, String city, float latitude, float longitude){
         this.country = country;
         this.city = city;
@@ -35,6 +29,7 @@ public class Location{
         this.longitude = longitude;
     }
 
+    /** Constructor that casts doubles to floats in its construction. */
     public Location(String country, String city, double latitude, double longitude){
         this.country = country;
         this.city = city;

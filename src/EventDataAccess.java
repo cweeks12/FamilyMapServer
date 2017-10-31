@@ -1,8 +1,7 @@
 package familyserver.access;
 
 import familyserver.error.InternalServerError;
-import familyserver.model.Event;
-import familyserver.model.Location;
+import familyserver.model.*;
 import familyserver.util.Utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,10 +20,10 @@ import java.util.List;
 
 public class EventDataAccess{
 
-    // Driver string for the class
+    /** Driver string for the class. */
     private final String driver = "org.sqlite.JDBC";
 
-    // Holds the name of the database
+    /** Holds the name of the database. */
     private String dbName;
 
     /** Builds a new user data access object to interact with user database.
@@ -42,11 +41,22 @@ public class EventDataAccess{
 
         dbName = "jdbc:sqlite:"+databasePath;
 
+        String createTable = "CREATE TABLE IF NOT EXISTS event (" +
+                            "eventId TEXT NOT NULL PRIMARY KEY, " +
+                            "descendant TEXT NOT NULL, " +
+                            "person TEXT NOT NULL, " +
+                            "latitude REAL NOT NULL, " +
+                            "longitude REAL NOT NULL, " +
+                            "country TEXT NOT NULL, " +
+                            "city TEXT NOT NULL, " +
+                            "eventType TEXT NOT NULL, " +
+                            "year TEXT NOT NULL)";
+
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(dbName);
 
-            PreparedStatement stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS event (eventId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, person TEXT NOT NULL, latitude REAL NOT NULL, longitude REAL NOT NULL, country TEXT NOT NULL, city TEXT NOT NULL, eventType TEXT NOT NULL, year TEXT NOT NULL)");
+            PreparedStatement stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -56,6 +66,7 @@ public class EventDataAccess{
             System.out.println(e.getMessage());
         }
     }
+
 
     /**
      * Adds a new event to the database.
@@ -92,7 +103,8 @@ public class EventDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error updating the fields and doing the update. " + e.getMessage());
+                String error = "Error updating the fields and doing the update. " + e.getMessage();
+                 throw new InternalServerError(error);
             }
 
         }
@@ -103,6 +115,7 @@ public class EventDataAccess{
 
         return eventToCreate.getId();
     }
+
 
     /**
      * Queries the database and returns the Event object from the username.
@@ -176,7 +189,12 @@ public class EventDataAccess{
              throw new InternalServerError("Error closing connection." + e.getMessage());
         }
 
-        return new Event(id, descendant, person, new Location(country, city, latitude, longitude), eventType, year);
+        return new Event(id,
+                         descendant,
+                         person,
+                         new Location(country, city, latitude, longitude),
+                         eventType,
+                         year);
     }
 
 
@@ -238,7 +256,14 @@ public class EventDataAccess{
                 city = queryResult.getString("city");
                 eventType = queryResult.getString("eventType");
                 year = queryResult.getString("year");
-                listOfPeople.add(new Event(id, descendant, person, new Location(country, city, latitude, longitude), eventType, year));
+                listOfPeople.add(
+                            new Event(id,
+                                descendant,
+                                person,
+                                new Location(country, city, latitude, longitude),
+                                eventType,
+                                year)
+                                );
             }
         }
         catch (SQLException e){
@@ -253,7 +278,8 @@ public class EventDataAccess{
             connection = null;
         }
         catch (SQLException e){
-            throw new InternalServerError("Error closing the connection to database." + e.getMessage());
+            String error = "Error closing the connection to database." + e.getMessage();
+            throw new InternalServerError(error);
         }
 
         // If nobody was added to the list, return a null object
@@ -264,8 +290,11 @@ public class EventDataAccess{
         return listOfPeople;
     }
 
+
     /**
      * Drops all events in the database relating to certain person. This is called when /fill is requested.
+     *
+     * @param username The user making the request.
      */
 
     public void deleteUserEvents(String username) throws InternalServerError{
