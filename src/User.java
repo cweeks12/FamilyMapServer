@@ -4,7 +4,7 @@ import java.util.regex.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** 
+/**
  * Contains all information about one user.
  *
  * @author Connor Weeks <connorweeks1@gmail.com>
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class User{
 
     /** The user's username. */
-    private String username;
+    private String userName;
 
     /** The user's password. */
     private String password;
@@ -32,7 +32,7 @@ public class User{
     private String gender;
 
     /** The user's unique id number. */
-    private String id;
+    private String personID;
 
     public User( String username,
                     String password,
@@ -56,13 +56,13 @@ public class User{
             throw new IllegalArgumentException();
         }
 
-        this.username = username;
+        this.userName = username;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.id = id;
+        this.personID = id;
     }
 
     @Override
@@ -77,13 +77,13 @@ public class User{
 
         User u = (User) o;
 
-        return this.username.equals(u.getUsername())
+        return this.userName.equals(u.getUsername())
             && this.password.equals(u.getPassword())
             && this.email.equals(u.getEmail())
             && this.firstName.equals(u.getFirstName())
             && this.lastName.equals(u.getLastName())
             && this.gender.equals(u.getGender())
-            && this.id.equals(u.getId());
+            && this.personID.equals(u.getId());
     }
 
     /*
@@ -93,14 +93,14 @@ public class User{
      */
 
     public String getUsername(){
-        return username;
+        return userName;
     }
 
     public void setUsername(String username) throws IllegalArgumentException{
         if (username == null){
             throw new IllegalArgumentException();
         }
-        this.username = username;
+        this.userName = username;
     }
 
     public String getPassword(){
@@ -168,14 +168,14 @@ public class User{
     }
 
     public String getId(){
-        return id;
+        return personID;
     }
 
     public void setId(String id) throws IllegalArgumentException{
         if (id == null){
             throw new IllegalArgumentException();
         }
-        this.id = id;
+        this.personID = id;
     }
 
 }

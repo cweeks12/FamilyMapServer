@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class PeopleResponse{
 
     /** Array of Person objects to load in. */
-    List<PersonResponse> data;
+    List<Person> data;
 
     /**
      * Constructor that creates the object to return in response to the GET request.
@@ -18,8 +18,9 @@ public class PeopleResponse{
      */
 
     public PeopleResponse(List<Person> people){
+        data = new ArrayList<Person>();
         for (Person p : people){
-            data.add(new PersonResponse(p));
+            data.add(p);
         }
     }
 }

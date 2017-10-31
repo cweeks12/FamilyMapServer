@@ -86,7 +86,7 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error Updating the fields and doing the update." + e.getMessage());
+                 throw new InternalServerError("Error updating the fields and doing the update." + e.getMessage());
             }
 
         }
@@ -125,7 +125,7 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error Updating the fields and doing the update.");
+                 throw new InternalServerError("Error updating the fields and doing the update. " + e.getMessage());
             }
 
         }

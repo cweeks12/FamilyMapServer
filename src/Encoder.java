@@ -5,13 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Encoder {
-    private Gson gson;
+    private static Gson gson;
 
     public Encoder(){
         gson = new Gson();
     }
 
-    public String toJson(Object o){
+    public static String toJson(Object o){
         return gson.toJson(o);
     }
 }

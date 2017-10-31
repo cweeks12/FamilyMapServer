@@ -10,23 +10,23 @@ public class EventResponse{
 
 
     /** Descendant this event belongs to. */
-    private String descendant;
+    public String descendant;
     /** Unique ID for the event. */
-    private String eventId;
+    public String eventID;
     /** ID of the person that this event is for.*/
-    private String personId;
+    public String personID;
     /** Latitude of the event. */
-    private float latitude;
+    public float latitude;
     /** Longitude of the event. */
-    private float longitude;
+    public float longitude;
     /** Country it occurred in. */
-    private String country;
+    public String country;
     /** City it occurred in. */
-    private String city;
+    public String city;
     /** Type of event (marriage, baptism, birth, death). */
-    private String eventType;
+    public String eventType;
     /** Year it occurred. */
-    private int year;
+    public String year;
 
     /**
      * Constructor that creates the object to return in response to the GET request.
@@ -38,8 +38,8 @@ public class EventResponse{
         Location loc = event.getEventLocation();
 
         descendant = event.getUsername();
-        eventId = event.getId();
-        personId = event.getPersonId();
+        eventID = event.getId();
+        personID = event.getPersonId();
         eventType = event.getEventType();
         year = event.getYear();
 
@@ -52,11 +52,11 @@ public class EventResponse{
     public void setDescendant(String descendant){
         this.descendant = descendant;
     }
-    public void setEventId(String eventId){
-        this.eventId = eventId;
+    public void seteventID(String eventID){
+        this.eventID = eventID;
     }
-    public void setPersonId(String personId){
-        this.personId = personId;
+    public void setpersonID(String personID){
+        this.personID = personID;
     }
     public void setLatitude(float latitude){
         this.latitude = latitude;
@@ -73,7 +73,7 @@ public class EventResponse{
     public void setEventType(String eventType){
         this.eventType = eventType;
     }
-    public void setYear(int year){
+    public void setYear(String year){
         this.year = year;
     }
 }

@@ -12,9 +12,9 @@ public class EventTest{
 
     @Before
     public void setup(){
-        event = new Event("ABCDE431", "cweeks12", "54382BAC", new Location("Provo", "United States", 40.2338, -111.6585), "Marriage", 2016);
+        event = new Event("ABCDE431", "cweeks12", "54382BAC", new Location("Provo", "United States", 40.2338, -111.6585), "Marriage", "2016");
 
-        secondEvent = new Event("A2918C31", "cweeks12", "8192837C", new Location("Kansas City", "United States", 40.7281, -97.2817), "Birth", 1997);
+        secondEvent = new Event("A2918C31", "cweeks12", "8192837C", new Location("Kansas City", "United States", 40.7281, -97.2817), "Birth", "1997");
     }
 
     @Test
@@ -23,7 +23,7 @@ public class EventTest{
 
         assertTrue(event.equals(event));
 
-        assertFalse(event.equals(new Event("ABCDE431", "cweeks12", "54382BAC", new Location("Albany", "United States", 40.2338, -111.6585), "Marriage", 2016)));
+        assertFalse(event.equals(new Event("ABCDE431", "cweeks12", "54382BAC", new Location("Albany", "United States", 40.2338, -111.6585), "Marriage", "2016")));
     }
 
     @Test
@@ -45,8 +45,8 @@ public class EventTest{
         event.setEventType("Baptism");
         assertEquals("Baptism", event.getEventType());
 
-        event.setYear(1902);
-        assertEquals(1902, event.getYear());
+        event.setYear("1902");
+        assertEquals("1902", event.getYear());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -56,12 +56,12 @@ public class EventTest{
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullArgumentErrorInConstructor(){
-        event = new Event(null, "cweeks12", "54382BAC", new Location("Provo", "United States", 40.2338, -111.6585), "Marriage", 2016);
+        event = new Event(null, "cweeks12", "54382BAC", new Location("Provo", "United States", 40.2338, -111.6585), "Marriage", "2016");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGenderInvalidYearError(){
-        event.setYear(-291);
+    public void testInvalidYearError(){
+        event.setYear(null);
     }
 
 }

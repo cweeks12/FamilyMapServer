@@ -1,5 +1,6 @@
 package familyserver.model;
 
+import familyserver.response.EventResponse;
 /**
  * Contains all information about events
  *
@@ -20,10 +21,10 @@ public class Event{
     /** The event's type. (Baptism, birth, christening, marriage) */
     private String eventType;
     /** The event's year */
-    private int year;
+    private String year;
 
 
-    public Event(String id, String username, String personId, Location eventLocation, String eventType, Integer year) throws IllegalArgumentException{
+    public Event(String id, String username, String personId, Location eventLocation, String eventType, String year) throws IllegalArgumentException{
 
         if (id == null || username == null || personId == null || eventLocation == null || eventType == null || year == null){
             throw new IllegalArgumentException();
@@ -35,6 +36,15 @@ public class Event{
         this.eventLocation = eventLocation;
         this.eventType = eventType;
         this.year = year;
+    }
+
+    public Event(EventResponse response){
+        this.id = response.eventID;
+        this.username = response.descendant;
+        this.personId = response.personID;
+        this.eventLocation = new Location(response.country, response.city, response.latitude, response.longitude);
+        this.eventType = response.eventType;
+        this.year = response.year;
     }
 
     @Override
@@ -113,12 +123,12 @@ public class Event{
         this.eventType = eventType;
     }
 
-    public int getYear(){
+    public String getYear(){
         return year;
     }
 
-    public void setYear(Integer year){
-        if (year == null || year < 0){
+    public void setYear(String year){
+        if (year == null){
             throw new IllegalArgumentException();
         }
         this.year = year;

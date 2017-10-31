@@ -3,6 +3,7 @@ package familyserver.request;
 import familyserver.model.Event;
 import familyserver.model.Person;
 import familyserver.model.User;
+import familyserver.response.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -17,16 +18,18 @@ public class LoadRequest{
     List<Person> persons;
 
     /** Array of Event objects to load in. */
-    List<Event> events;
+    List<EventResponse> events;
 
     /**
      * Constructor that builds the object from a json string.
      *
      * @param jsonString String holding json contents of object.
      */
-    
+
     public LoadRequest(String jsonString){
     }
+
+    public LoadRequest(){}
 
     public List<User> getUsers(){
         return users;
@@ -36,7 +39,7 @@ public class LoadRequest{
         return persons;
     }
 
-    public List<Event> getEvents(){
+    public List<EventResponse> getEvents(){
         return events;
     }
 }

@@ -25,7 +25,7 @@ public class ServerFacade{
     PersonDataAccess personDAO;
     UserDataAccess userDAO;
 
-    ServerFacade(String databasePath){
+    public ServerFacade(String databasePath){
         authDAO = new AuthTokenDataAccess(databasePath);
         eventDAO = new EventDataAccess(databasePath);
         personDAO = new PersonDataAccess(databasePath);
@@ -45,7 +45,7 @@ public class ServerFacade{
      * @return A login response with the new auth token.
      */
 
-    public LoginResponse register(RegisterRequest request) throws UsernameAlreadyTakenError, InternalServerError{
+    public LoginResponse register(RegisterRequest request) throws InternalServerError{
 
         String newUserId = null;
         String newToken = null;
@@ -55,12 +55,9 @@ public class ServerFacade{
         }
 
         catch(IllegalArgumentException e){
+            throw new InternalServerError("Included a bad argument. " + e.getMessage());
+        }
 
-        }
-        catch(InternalServerError e){
-            System.out.println(e.getMessage());
-            throw new UsernameAlreadyTakenError();
-        }
         this.fill(request.getUserName(), 4);
 
 
@@ -242,12 +239,16 @@ public class ServerFacade{
         try {
             for (User u : request.getUsers()){
                 userDAO.createNewUser(u);
+                userCount++;
             }
             for (Person p : request.getPersons()){
+                System.out.println(p);
                 personDAO.createNewPerson(p);
+                personCount++;
             }
-            for (Event e : request.getEvents()){
-                eventDAO.createNewEvent(e);
+            for (EventResponse e : request.getEvents()){
+                eventDAO.createNewEvent(new Event(e));
+                eventCount++;
             }
             message = "Successfully added " + userCount + " users, " + personCount + " persons, and " + eventCount + " events into the database.";
         }
@@ -271,11 +272,11 @@ public class ServerFacade{
      * @return A PersonResponse object with the requested person's information in it.
      */
 
-    public PersonResponse person(AuthToken token, String personId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public PersonResponse person(String token, String personId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
         String user = null;
         Person personToReturn = null;
         try {
-            user = authDAO.userForToken(token.getToken());
+            user = authDAO.userForToken(token);
             if (user == null){
                 throw new InvalidAuthTokenError();
             }
@@ -299,11 +300,11 @@ public class ServerFacade{
      */
 
 
-    public PeopleResponse people(AuthToken token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public PeopleResponse people(String token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
         String user;
         List<Person> returnedPeople = null;
         try {
-            user = authDAO.userForToken(token.getToken());
+            user = authDAO.userForToken(token);
             if (user == null){
                 throw new InvalidAuthTokenError();
             }
@@ -328,12 +329,12 @@ public class ServerFacade{
      * @return An EventResponse object with the requested event's information in it.
      */
 
-    public EventResponse event(AuthToken token, String eventId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public EventResponse event(String token, String eventId) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
 
         String user = null;
         Event eventToReturn = null;
         try {
-            user = authDAO.userForToken(token.getToken());
+            user = authDAO.userForToken(token);
             if (user == null){
                 throw new InvalidAuthTokenError();
             }
@@ -355,11 +356,11 @@ public class ServerFacade{
      * @return An EventsResponse object with all of the data of all of the events associated with the requesting user.
      */
 
-    public EventsResponse events(AuthToken token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
+    public EventsResponse events(String token) throws InvalidAuthTokenError, NoResultsFoundError, InternalServerError{
         String user;
         List<Event> returnedEvents = null;
         try {
-            user = authDAO.userForToken(token.getToken());
+            user = authDAO.userForToken(token);
             if (user == null){
                 throw new InvalidAuthTokenError();
             }

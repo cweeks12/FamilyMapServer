@@ -86,13 +86,13 @@ public class EventDataAccess{
                 stmt.setString(6, eventLocation.getCountry());
                 stmt.setString(7, eventLocation.getCity());
                 stmt.setString(8, eventToCreate.getEventType());
-                stmt.setInt(9, eventToCreate.getYear());
+                stmt.setString(9, eventToCreate.getYear());
 
                 stmt.executeUpdate();
                 stmt.close();
             }
             catch(SQLException e){
-                 throw new InternalServerError("Error Updating the fields and doing the update.");
+                 throw new InternalServerError("Error updating the fields and doing the update. " + e.getMessage());
             }
 
         }
@@ -129,7 +129,7 @@ public class EventDataAccess{
         String country;
         String city;
         String eventType;
-        int year;
+        String year;
 
         try {
             connection = DriverManager.getConnection(dbName);
@@ -159,7 +159,7 @@ public class EventDataAccess{
             country = queryResult.getString("country");
             city = queryResult.getString("city");
             eventType = queryResult.getString("eventType");
-            year = queryResult.getInt("year");
+            year = queryResult.getString("year");
         }
         catch (SQLException e){
             // If there is an exception here, it's because there are no results in the set.
@@ -205,7 +205,7 @@ public class EventDataAccess{
         String country;
         String city;
         String eventType;
-        int year;
+        String year;
 
         try{
             connection = DriverManager.getConnection(dbName);
@@ -237,7 +237,7 @@ public class EventDataAccess{
                 country = queryResult.getString("country");
                 city = queryResult.getString("city");
                 eventType = queryResult.getString("eventType");
-                year = queryResult.getInt("year");
+                year = queryResult.getString("year");
                 listOfPeople.add(new Event(id, descendant, person, new Location(country, city, latitude, longitude), eventType, year));
             }
         }

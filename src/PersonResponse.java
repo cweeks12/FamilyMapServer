@@ -8,8 +8,8 @@ import familyserver.model.Person;
 
 public class PersonResponse{
 
-    /** Unique personIdentifier for this person */
-    private String personId;
+    /** Unique personIDentifier for this person */
+    private String personID;
 
     /** User (username) to which this person belongs */
     private String descendant;
@@ -40,7 +40,7 @@ public class PersonResponse{
      */
 
     public PersonResponse(Person person){
-        personId = person.getId();
+        personID = person.getId();
         descendant = person.getDescendant();
         firstName = person.getFirstName();
         lastName = person.getLastName();
@@ -51,8 +51,8 @@ public class PersonResponse{
 
     }
 
-    public void setPersonId(String personId){
-        this.personId = personId;
+    public void setpersonID(String personID){
+        this.personID = personID;
     }
 
     public void setDescendant(String descendant){

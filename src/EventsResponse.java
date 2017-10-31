@@ -18,6 +18,7 @@ public class EventsResponse{
      */
 
     public EventsResponse(List<Event> events){
+        data = new ArrayList<EventResponse>();
         for (Event e : events){
             data.add(new EventResponse(e));
         }

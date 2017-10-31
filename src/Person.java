@@ -1,5 +1,6 @@
 package familyserver.model;
 
+import familyserver.response.PersonResponse;
 import java.lang.StringBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 public class Person{
 
     /** Unique identifier for this person */
-    private String id;
+    private String personID;
 
     /** User (username) to which this person belongs */
     private String descendant;
@@ -54,7 +55,7 @@ public class Person{
 
         Person p = (Person) o;
 
-        return this.id.equals(p.getId()) && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
+        return this.personID.equals(p.getId()) && this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName());
     }
 
     /**
@@ -67,7 +68,7 @@ public class Person{
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("ID: " + id);
+        sb.append("ID: " + personID);
         sb.append(" Desc: " + descendant);
         sb.append(" Name: " + firstName + " " + lastName);
         sb.append(" Gender: " + gender);
@@ -77,7 +78,6 @@ public class Person{
 
         return sb.toString();
     }
-
 
     public Person(String id,
                     String descendant,
@@ -97,7 +97,7 @@ public class Person{
             throw new IllegalArgumentException();
         }
 
-        this.id = id;
+        this.personID = id;
         this.descendant = descendant;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -114,14 +114,14 @@ public class Person{
      */
 
     public String getId(){
-        return id;
+        return personID;
     }
 
     public void setId(String id) throws IllegalArgumentException{
         if (id == null){
             throw new IllegalArgumentException();
         }
-        this.id = id;
+        this.personID = id;
     }
 
     public String getDescendant(){
