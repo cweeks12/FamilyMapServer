@@ -53,10 +53,6 @@ public class User{
                 throw new IllegalArgumentException();
         }
 
-        if (!Pattern.matches("\\p{Alpha}\\w*@\\w+\\.\\w{3,}", email)){
-            throw new IllegalArgumentException();
-        }
-
         gender = gender.toUpperCase();
         if (!gender.equals("F") && !gender.equals("M")){
             throw new IllegalArgumentException();

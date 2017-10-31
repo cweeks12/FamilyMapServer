@@ -80,8 +80,6 @@ public class PersonDataAccess{
 
             String insert = "INSERT INTO person VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            System.out.println(personToCreate.getFather());
-
             // If the person you're given doesn't have an ID yet, assign one
             if (personToCreate.getId() == null){
                 personToCreate.setId(Utils.generateId());
@@ -102,7 +100,7 @@ public class PersonDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                error = "Error updating the fields and doing the update." + e.getMessage();
+                String error = "Error updating the fields and doing the update." + e.getMessage();
                 throw new InternalServerError(error);
             }
 

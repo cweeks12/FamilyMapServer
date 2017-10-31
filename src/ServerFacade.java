@@ -350,7 +350,6 @@ public class ServerFacade{
             }
 
             for (Person p : request.getPersons()){
-                System.out.println(p);
                 personDAO.createNewPerson(p);
                 personCount++;
             }
@@ -398,6 +397,10 @@ public class ServerFacade{
             }
 
             personToReturn = personDAO.getPersonById(personId);
+
+            if (!user.equals(personToReturn.getDescendant())){
+                throw new InvalidAuthTokenError();
+            }
 
             if (personToReturn == null){
                 throw new NoResultsFoundError();
@@ -466,6 +469,10 @@ public class ServerFacade{
             }
 
             eventToReturn = eventDAO.getEventById(eventId);
+
+            if (!user.equals(eventToReturn.getUsername())){
+                throw new InvalidAuthTokenError();
+            }
 
             if (eventToReturn == null){
                 throw new NoResultsFoundError();
