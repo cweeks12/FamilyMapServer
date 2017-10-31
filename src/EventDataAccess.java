@@ -264,6 +264,33 @@ public class EventDataAccess{
         return listOfPeople;
     }
 
+    /**
+     * Drops all events in the database relating to certain person. This is called when /fill is requested.
+     */
+
+    public void deleteUserEvents(String username) throws InternalServerError{
+        try (Connection connection = DriverManager.getConnection(dbName)){
+
+            String delete = "DELETE FROM event WHERE descendant = ?";
+
+            try{
+                PreparedStatement stmt = connection.prepareStatement(delete);
+                stmt.setString(1, username);
+
+                stmt.executeUpdate();
+                stmt.close();
+            }
+            catch(SQLException e){
+                throw new InternalServerError("Error querying the database.");
+            }
+
+        }
+
+        catch(SQLException e){
+            throw new InternalServerError("The connection to database failed.");
+        }
+    }
+
 
     /**
      * Drops all events in the database. This is called when /clear is requested.

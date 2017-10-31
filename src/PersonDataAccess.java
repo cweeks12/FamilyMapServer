@@ -261,7 +261,7 @@ public class PersonDataAccess{
     }
 
     /**
-     * Drops all people in the database relating to certain person. This is called when /clear is requested.
+     * Drops all people in the database relating to certain person. This is called when /fill is requested.
      */
 
     public void deleteUserPeople(String username) throws InternalServerError{

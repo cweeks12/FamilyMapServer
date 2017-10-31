@@ -21,15 +21,19 @@ public class Server{
     static Encoder encoder;
     static ServerFacade facade;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
         decoder = new Decoder();
         encoder = new Encoder();
 
     	Server server = new Server();
         facade = new ServerFacade("family.db");
 
-    	server.startServer(Integer.parseInt(args[0]));
-
+        try{
+    	   server.startServer(Integer.parseInt(args[0]));
+        }
+        catch (NumberFormatException){
+            System.out.println("You must put a valid number in for the port number");
+        }
     }
 
     void startServer(int port){
@@ -44,6 +48,7 @@ public class Server{
         }
         catch (IOException e){
             System.out.println("Server failed to start");
+            return;
         }
 
     	server.createContext("/", new RootHandler());
@@ -67,7 +72,6 @@ public class Server{
 
             try {
                 String path = "data/web" + exchange.getRequestURI().toString();
-                System.out.println(path);
                 if (path.equals("data/web/")){
                     path = "data/web/index.html";
                 }
@@ -87,14 +91,9 @@ public class Server{
         @Override
         public void handle(HttpExchange exchange) throws IOException{
 
-            MessageResponse response;
-
-            System.out.println("/CLEAR");
-
-            response = facade.clear();
+            MessageResponse response = facade.clear();
 
             exchange.sendResponseHeaders(HTTP_OK, 0);
-
 
             sendResponseBody(exchange, encoder.toJson(response));
         }
@@ -135,7 +134,6 @@ public class Server{
     class LoginHandler implements HttpHandler{
         @Override
         public void handle(HttpExchange exchange) throws IOException{
-            System.out.println("login");
 
             String response = null;
             MessageResponse errorMessage = null;
@@ -192,8 +190,6 @@ public class Server{
 
             response = facade.fill(uriPieces[2], generations);
 
-            System.out.println(response);
-
             exchange.sendResponseHeaders(HTTP_OK, 0);
 
             sendResponseBody(exchange, encoder.toJson(response));
@@ -213,8 +209,6 @@ public class Server{
             catch (JsonParseException e){
                 response = new MessageResponse("There was an error parsing the given JSON.");
             }
-
-            // TODO Fix the father/mother null effect
 
             exchange.sendResponseHeaders(HTTP_OK, 0);
 
@@ -389,14 +383,10 @@ public class Server{
 
         StringBuilder sb = new StringBuilder();
 
-    	System.out.println("request body:");
-
     	Scanner in = new Scanner(exchange.getRequestBody());
     	while (in.hasNextLine())
     	    sb.append(in.nextLine());
     	in.close();
-
-    	System.out.println(sb);
 
         return sb.toString();
     }
@@ -406,10 +396,5 @@ public class Server{
     	PrintWriter out = new PrintWriter(exchange.getResponseBody());
     	out.print(response);
     	out.close();
-
-    	System.out.println("response body:");
-    	System.out.println(response);
-    	System.out.println();
-
     }
 }

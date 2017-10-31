@@ -10,6 +10,7 @@ import familyserver.util.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Interface for the server to interact with everything in the
@@ -126,7 +127,6 @@ public class ServerFacade{
     public MessageResponse fill(String username, Integer generations){
 
         Decoder decoder = new Decoder();
-        User userMakingRequest = null;
         String message = null;
         int newPeopleQuantity = 0;
 
@@ -147,6 +147,7 @@ public class ServerFacade{
             }
              // FIRST DELETE ALL THE PEOPLE BELONGING TO THE PERSON requesting
              personDAO.deleteUserPeople(username);
+             eventDAO.deleteUserEvents(username);
 
             LocationGenerator locations = decoder.toLocationGenerator("data/json/locations.json");
             NameGenerator boyNames = decoder.toNameGenerator("data/json/mnames.json");
@@ -193,18 +194,72 @@ public class ServerFacade{
                 newPeople[i].setFather(newPeople[currentParentIndex+1].getId());
             }
 
-            System.out.println(newPeople.length);
             for (Person p : newPeople){
                 personDAO.createNewPerson(p);
-                System.out.println(p);
             }
 
             int eventsMade = 0;
+            int generationGap = 0;
+            int currentGeneration = 0;
+            final int baseYear = 1990;
+            final int currentYear = 2017;
+            final int yearsBetweenGenerations = 30;
+            final int baptismAge = 9;
+            final int marriageAge = 23;
+            final int deathAge = 70;
 
-            for (int i = 1; i < newPeople.length; i++){
-                // Create birth, baptism, marriage, and death for some of them
-                // I'll do this later because it's lame
+            for (int i = 0; i < newPeople.length; i++){
+
+                int birthYear = baseYear - (currentGeneration * yearsBetweenGenerations) + randomPlusOrMinus(5);
+                eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Birth", Integer.toString(birthYear)));
+                eventsMade++;
+
+                System.out.println(birthYear);
+
+                int baptismYear = birthYear + baptismAge + randomPlusOrMinus(1);
+                if (baptismYear < currentYear){
+                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Baptism", Integer.toString(baptismYear)));
+                    eventsMade++;
+                }
+
+                if (i == 0){
+                    // The first user is not married yet, or dead
+                    continue;
+                }
+
+                int deathYear = birthYear + deathAge + randomPlusOrMinus(15);
+                if (deathYear < currentYear){
+                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), locations.getRandomLocation(), "Death", Integer.toString(deathYear)));
+                    eventsMade++;
+                }
+
+                if (i >= generationGap){
+                    currentGeneration++;
+                    generationGap += 2*currentGeneration;
+                }
+
             }
+
+            generationGap = 0;
+            currentGeneration = 0;
+
+            // More beautiful marriages
+            for (int i = 1; i < newPeople.length; i+=2){
+                int birthYear = baseYear - (currentGeneration * yearsBetweenGenerations);
+                int marriageYear = birthYear + marriageAge + randomPlusOrMinus(10);
+                if (marriageYear < currentYear){
+                    Location loc = locations.getRandomLocation();
+                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i].getId(), loc, "Marriage", Integer.toString(marriageYear)));
+                    eventDAO.createNewEvent(new Event(Utils.generateId(), username, newPeople[i+1].getId(), loc, "Marriage", Integer.toString(marriageYear)));
+                    eventsMade += 2;
+                }
+                if (i >= generationGap){
+                    currentGeneration++;
+                    generationGap += 2*currentGeneration;
+                }
+            }
+
+
 
             message = "Successfully added " + newPeopleQuantity + " persons and " + eventsMade + " events to the database.";
         }
@@ -219,6 +274,11 @@ public class ServerFacade{
             message = "Error reading JSON to generate names";
         }
         return new MessageResponse(message);
+    }
+
+    public int randomPlusOrMinus(int offset){
+        Random random = new Random();
+        return random.nextInt(offset*2 + 1) - offset;
     }
 
 
