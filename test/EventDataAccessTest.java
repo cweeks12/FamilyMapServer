@@ -43,11 +43,32 @@ public class EventDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS event (eventId TEXT NOT NULL PRIMARY KEY, descendant TEXT NOT NULL, person TEXT NOT NULL, latitude REAL NOT NULL, longitude REAL NOT NULL, country TEXT NOT NULL, city TEXT NOT NULL, eventType TEXT NOT NULL, year TEXT NOT NULL)");
+            String createTable = "CREATE TABLE IF NOT EXISTS event (" +
+                                    "eventId TEXT NOT NULL PRIMARY KEY, " +
+                                    "descendant TEXT NOT NULL, " +
+                                    "person TEXT NOT NULL, " +
+                                    "latitude REAL NOT NULL, " +
+                                    "longitude REAL NOT NULL, " +
+                                    "country TEXT NOT NULL, " +
+                                    "city TEXT NOT NULL, " +
+                                    "eventType TEXT NOT NULL, " +
+                                    "year TEXT NOT NULL)";
+
+            stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("INSERT INTO event VALUES('12345678','cweeks12','ABCDEF98', 2.3456, 3.4567, 'United States', 'Provo', 'Marriage', '2016')");
+            String insert = "INSERT INTO event VALUES('12345678'," +
+                                        "'cweeks12'," +
+                                        "'ABCDEF98', " +
+                                        "2.3456, " +
+                                        "3.4567, " + 
+                                        "'United States', " +
+                                        "'Provo', " +
+                                        "'Marriage', " +
+                                        "'2016')";
+
+            stmt = connection.prepareStatement(insert);
             stmt.executeUpdate();
             stmt.close();
 
@@ -58,7 +79,15 @@ public class EventDataAccessTest{
         }
 
         eventDAO = new EventDataAccess("test.db");
-        event = new Event("12345678","cweeks12","ABCDEF98", new Location("United States", "Provo", 2.3456, 3.4567), "Marriage", "2016");
+        event = new Event("12345678",
+                            "cweeks12",
+                            "ABCDEF98",
+                            new Location("United States",
+                                "Provo",
+                                2.3456,
+                                3.4567),
+                            "Marriage",
+                            "2016");
     }
 
     @Test
@@ -92,7 +121,15 @@ public class EventDataAccessTest{
     @Test
     public void testAddingEventToDatabase(){
         // This test adds a new event to the database, then tests if it arrived in there by looking for it.
-        Event secondEvent = new Event("1BE34F22", "cweeks12", "34E5F291", new Location("Kansas City", "United States", 40.5839, -111.9283), "Birth", "1987");
+        Event secondEvent = new Event("1BE34F22",
+                                        "cweeks12",
+                                        "34E5F291",
+                                        new Location("Kansas City",
+                                            "United States",
+                                            40.5839,
+                                            -111.9283),
+                                        "Birth",
+                                        "1987");
         try {
             eventDAO.createNewEvent(secondEvent);
         }
@@ -116,7 +153,15 @@ public class EventDataAccessTest{
     public void testAddingInvalidEventToDatabase(){
         // This test adds an invalid event to the database, should throw an exception
         try {
-            eventDAO.createNewEvent(new Event("1BE34F22", "cweeks12", null, new Location("Kansas City", "United States", 40.5839, -111.9283), "Birth", "1987"));
+            eventDAO.createNewEvent(new Event("1BE34F22",
+                                                "cweeks12",
+                                                null,
+                                                new Location("Kansas City",
+                                                    "United States",
+                                                    40.5839,
+                                                    -111.9283),
+                                                "Birth",
+                                                "1987"));
         }
         catch (InternalServerError e){
             fail(e.getMessage());
@@ -143,7 +188,16 @@ public class EventDataAccessTest{
     public void testGettingListOfEvents(){
         // This test queries the database for all people belonging to "cweeks12" and makes sure the list is right.
         List<Event> givenEvents = new ArrayList<Event>();
-        Event newEvent = new Event("1BE34F22", "cweeks12", "34E5F291", new Location("Kansas City", "United States", 40.5839, -111.9283), "Birth", "1987");
+        Event newEvent = new Event("1BE34F22",
+                                    "cweeks12",
+                                    "34E5F291",
+                                    new Location("Kansas City",
+                                        "United States",
+                                        40.5839,
+                                        -111.9283),
+                                    "Birth",
+                                    "1987");
+
         try {
             eventDAO.createNewEvent(newEvent);
             givenEvents = eventDAO.getAllEvents("cweeks12");
@@ -160,7 +214,16 @@ public class EventDataAccessTest{
     public void testGettingListOfEventsWithInvalidUsername(){
         // This test queries the database for all people belonging to "target" and makes sure the result is null
         List<Event> givenEvents = new ArrayList<Event>();
-        Event newEvent = new Event("1BE34F22", "cweeks12", "34E5F291", new Location("Kansas City", "United States", 40.5839, -111.9283), "Birth", "1987");
+        Event newEvent = new Event("1BE34F22",
+                                    "cweeks12",
+                                    "34E5F291",
+                                    new Location("Kansas City",
+                                        "United States",
+                                        40.5839,
+                                        -111.9283),
+                                    "Birth",
+                                    "1987");
+
         try {
             eventDAO.createNewEvent(newEvent);
             givenEvents = eventDAO.getAllEvents("target");
@@ -175,7 +238,16 @@ public class EventDataAccessTest{
     public void testGettingListOfEventsWithNullUsername(){
         // This test queries the database for all people belonging to null and makes sure the result is null
         List<Event> givenEvents = new ArrayList<Event>();
-        Event newEvent = new Event("1BE34F22", "cweeks12", "34E5F291", new Location("Kansas City", "United States", 40.5839, -111.9283), "Birth", "1987");
+        Event newEvent = new Event("1BE34F22",
+                                    "cweeks12",
+                                    "34E5F291",
+                                    new Location("Kansas City",
+                                        "United States",
+                                        40.5839,
+                                        -111.9283),
+                                    "Birth",
+                                    "1987");
+
         try {
             eventDAO.createNewEvent(newEvent);
             givenEvents = eventDAO.getAllEvents(null);

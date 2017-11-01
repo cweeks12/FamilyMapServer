@@ -9,22 +9,39 @@ public class UserTest{
     private User user;
     private User secondUser;
 
-
-    /** Creates two User objects and opens a connection to database */
     @Before
     public void setup(){
-        user = new User("cweeks12", "pa$$word", "connorweeks1@gmail.com", "Connor", "Weeks", "M", "DEADBEEF");
-        secondUser = new User("gloria", "pa$$w0rd", "gl000000ria@gmail.com", "Gloria", "Glory", "F", "12345ABC");
+        user = new User("cweeks12",
+                        "pa$$word",
+                        "connorweeks1@gmail.com",
+                        "Connor",
+                        "Weeks",
+                        "M",
+                        "DEADBEEF");
+
+        secondUser = new User("gloria",
+                                "pa$$w0rd",
+                                "gl000000ria@gmail.com",
+                                "Gloria",
+                                "Glory",
+                                "F",
+                                "12345ABC");
 
     }
-        
+
     @Test
     public void testEquals(){
         assertFalse(user.equals(secondUser));
 
         assertTrue(user.equals(user));
 
-        assertFalse(user.equals(new User("cweeks13", "pa$$word", "connorweeks1@gmail.com", "Connor", "Weeks", "M", "DEADBEEF"))); 
+        assertFalse(user.equals(new User("cweeks13",
+                                            "pa$$word",
+                                            "connorweeks1@gmail.com",
+                                            "Connor",
+                                            "Weeks",
+                                            "M",
+                                            "DEADBEEF")));
     }
 
     @Test

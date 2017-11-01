@@ -24,7 +24,7 @@ public class UserDataAccessTest{
     public void setup(){
         try{
             Class.forName("org.sqlite.JDBC");
-        } 
+        }
         catch (ClassNotFoundException e){
             fail();
         }
@@ -35,7 +35,7 @@ public class UserDataAccessTest{
         try{
             connection = DriverManager.getConnection(dbName);
         }catch(SQLException e){
-            
+
             System.out.println(e.getMessage());
         }
 
@@ -44,22 +44,41 @@ public class UserDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS user (username TEXT NOT NULL PRIMARY KEY, password TEXT NOT NULL, email TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, gender TEXT NOT NULL, personId TEXT NOT NULL)");
+            String createTable = "CREATE TABLE IF NOT EXISTS user " +
+                                    "(username TEXT NOT NULL PRIMARY KEY, " +
+                                    "password TEXT NOT NULL, " +
+                                    "email TEXT NOT NULL, " +
+                                    "firstName TEXT NOT NULL, " +
+                                    "lastName TEXT NOT NULL, " +
+                                    "gender TEXT NOT NULL, " + 
+                                    "personId TEXT NOT NULL)";
+
+            stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("INSERT INTO user VALUES('cweeks12','pa$$word','connorweeks1@gmail.com','Connor','Weeks','M','ABCDEF12')");
+            String insert = "INSERT INTO user VALUES(" +
+                                "'cweeks12','pa$$word','connorweeks1@gmail.com'," +
+                                "'Connor','Weeks','M','ABCDEF12')";
+
+            stmt = connection.prepareStatement(insert);
             stmt.executeUpdate();
             stmt.close();
 
-        } 
+        }
         catch (SQLException e){
             System.out.println("Error creating database");
             System.out.println(e.getMessage());
         }
 
         userDAO = new UserDataAccess("test.db");
-        user = new User("cweeks12","pa$$word","connorweeks1@gmail.com","Connor","Weeks","M","ABCDEF12");
+        user = new User("cweeks12",
+                        "pa$$word",
+                        "connorweeks1@gmail.com",
+                        "Connor",
+                        "Weeks",
+                        "M",
+                        "ABCDEF12");
     }
 
     @Test
@@ -76,7 +95,7 @@ public class UserDataAccessTest{
         assertTrue(foundUser.equals(user));
     }
 
-    @Test 
+    @Test
     public void searchingForNullUserById(){
         // This test makes sure that if you search for null, you get null back
         User foundUser = null;
@@ -164,7 +183,7 @@ public class UserDataAccessTest{
     }
 
     @Test
-    public void testDroppingAllPeople(){ 
+    public void testDroppingAllPeople(){
         // This test deletes everyone from the database, then checks for the original user from @Before, should return a null user.
 
         User foundUser = null;

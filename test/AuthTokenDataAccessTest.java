@@ -20,9 +20,10 @@ public class AuthTokenDataAccessTest{
 
     @Before
     public void setup(){
+
         try{
             Class.forName("org.sqlite.JDBC");
-        } 
+        }
         catch (ClassNotFoundException e){
             fail();
         }
@@ -30,11 +31,11 @@ public class AuthTokenDataAccessTest{
         String dbName = "jdbc:sqlite:test.db";
 
         Connection connection = null;
+
         try{
             connection = DriverManager.getConnection(dbName);
         }
         catch(SQLException e){
-            
             System.out.println(e.getMessage());
         }
 
@@ -43,7 +44,11 @@ public class AuthTokenDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS authToken (authToken TEXT NOT NULL PRIMARY KEY, username TEXT NOT NULL)");
+            String createTable = "CREATE TABLE IF NOT EXISTS authToken " +
+                                    "(authToken TEXT NOT NULL PRIMARY KEY, " +
+                                    "username TEXT NOT NULL)";
+
+            stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -51,7 +56,7 @@ public class AuthTokenDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-        } 
+        }
         catch (SQLException e){
             System.out.println("Error creating database");
             System.out.println(e.getMessage());
@@ -74,7 +79,7 @@ public class AuthTokenDataAccessTest{
         assertTrue(foundToken.equals(token));
     }
 
-    @Test 
+    @Test
     public void searchingForNullTokenById(){
         // This test makes sure that if you search for null, you get null back
         AuthToken foundToken = null;
@@ -95,7 +100,7 @@ public class AuthTokenDataAccessTest{
         try {
             String newToken = tokenDAO.newAuthToken("bunny");
             bunny = new AuthToken("bunny", newToken);
-            
+
         }
         catch (InternalServerError e){
             fail(e.getMessage());
@@ -126,7 +131,7 @@ public class AuthTokenDataAccessTest{
     }
 
     @Test
-    public void testDroppingAllTokens(){ 
+    public void testDroppingAllTokens(){
         // This test deletes everyone from the database, then checks for the original token from @Before, should return a null token.
 
         AuthToken foundToken = null;
@@ -140,5 +145,4 @@ public class AuthTokenDataAccessTest{
 
         assertNull(foundToken);
     }
-
 }

@@ -42,7 +42,17 @@ public class PersonDataAccessTest{
             stmt.executeUpdate();
             stmt.close();
 
-            stmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS person (personId text PRIMARY KEY, descendant text NOT NULL, firstName text NOT NULL, lastName text NOT NULL, gender text NOT NULL, father text, mother text, spouse text)");
+            String createTable = "CREATE TABLE IF NOT EXISTS person ( " +
+                                    "personId text PRIMARY KEY, " +
+                                    "descendant text NOT NULL, " +
+                                    "firstName text NOT NULL, " +
+                                    "lastName text NOT NULL, " +
+                                    "gender text NOT NULL, " +
+                                    "father text, " +
+                                    "mother text, " +
+                                    "spouse text)";
+
+            stmt = connection.prepareStatement(createTable);
             stmt.executeUpdate();
             stmt.close();
 
@@ -91,9 +101,9 @@ public class PersonDataAccessTest{
     @Test
     public void testAddingPersonToDatabase(){
         // This test adds a new person to the database, then tests if it arrived in there by looking for it.
-        Person wife = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
+        Person newPerson = new Person("ABCDEF98", "cweeks12", "Hannah", "Jones", "F", null, null, "12345678");
         try {
-            personDAO.createNewPerson(wife);
+            personDAO.createNewPerson(newPerson);
         }
         catch (InternalServerError e){
             fail(e.getMessage());
@@ -101,13 +111,13 @@ public class PersonDataAccessTest{
 
         Person foundPerson = null;
         try {
-            foundPerson = personDAO.getPersonById(wife.getId());
+            foundPerson = personDAO.getPersonById(newPerson.getId());
         }
         catch (InternalServerError e){
             fail(e.getMessage());
         }
 
-        assertTrue(wife.equals(foundPerson));
+        assertTrue(newPerson.equals(foundPerson));
     }
 
 

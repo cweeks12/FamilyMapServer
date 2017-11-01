@@ -12,9 +12,19 @@ public class EventTest{
 
     @Before
     public void setup(){
-        event = new Event("ABCDE431", "cweeks12", "54382BAC", new Location("Provo", "United States", 40.2338, -111.6585), "Marriage", "2016");
+        event = new Event("ABCDE431",
+                            "cweeks12",
+                            "54382BAC",
+                            new Location("Provo", "United States", 40.2338, -111.6585),
+                            "Marriage",
+                            "2016");
 
-        secondEvent = new Event("A2918C31", "cweeks12", "8192837C", new Location("Kansas City", "United States", 40.7281, -97.2817), "Birth", "1997");
+        secondEvent = new Event("A2918C31",
+                                "cweeks12",
+                                "8192837C",
+                                new Location("Kansas City", "United States", 40.7281, -97.2817),
+                                "Birth",
+                                "1997");
     }
 
     @Test
@@ -50,7 +60,7 @@ public class EventTest{
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testNullArgumentError(){
+    public void testNullSetterError(){
         event.setEventType(null);
     }
 

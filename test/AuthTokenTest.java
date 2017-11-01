@@ -37,7 +37,7 @@ public class AuthTokenTest{
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testUsernameSetterError(){
+    public void testUsernameSetterNullError(){
         token.setUsername(null);
     }
 

@@ -14,8 +14,7 @@ public class TestDriver{
                 "familyserver.test.UserTest",
                 "familyserver.test.UserDataAccessTest",
                 "familyserver.test.AuthTokenTest",
-                "familyserver.test.AuthTokenDataAccessTest",
-                "familyserver.test.ServerFacadeTest"
+                "familyserver.test.AuthTokenDataAccessTest"
                 );
     }
 }
