@@ -98,7 +98,7 @@ public class UserDataAccess{
                 stmt.close();
             }
             catch(SQLException e){
-                String error = "Error updating the fields and doing the update." + e.getMessage();
+                String error = "There is already a user registered with that username.";
                 throw new InternalServerError(error);
             }
         }

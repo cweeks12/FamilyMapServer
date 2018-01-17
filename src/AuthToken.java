@@ -21,19 +21,13 @@ public class AuthToken{
     private String username;
 
     /** Constructs an AuthToken given a username and a time until it expires. */
-    public AuthToken(String username) throws IllegalArgumentException{
-        if (username == null){
-            throw new IllegalArgumentException();
-        }
+    public AuthToken(String username){
         this.token = Utils.generateId();
         this.username = username;
     }
 
     /** Constructs an AuthToken given all of the parameters. */
-    public AuthToken(String username, String token) throws IllegalArgumentException{
-        if (token == null || username == null){
-            throw new IllegalArgumentException();
-        }
+    public AuthToken(String username, String token){
         this.token = token;
         this.username = username;
     }

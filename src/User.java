@@ -43,20 +43,6 @@ public class User{
                     String gender,
                     String id) throws IllegalArgumentException{
 
-        if (username == null
-            || password == null
-            || email == null
-            || firstName == null
-            || lastName == null
-            || gender == null
-            || id == null){
-                throw new IllegalArgumentException();
-        }
-
-        if (!Pattern.matches("\\p{Alpha}\\w*@\\w+\\.\\w{3,}", email)){
-            throw new IllegalArgumentException();
-        }
-
         gender = gender.toUpperCase();
         if (!gender.equals("F") && !gender.equals("M")){
             throw new IllegalArgumentException();

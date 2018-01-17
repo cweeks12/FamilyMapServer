@@ -89,6 +89,7 @@ public class ServerFacade{
                 throw new NoResultsFoundError();
             }
             loggingInUser = userDAO.getUserByUsername(request.getUsername());
+            System.out.println("Got through logging in user");
             newToken = authDAO.newAuthToken(request.getUsername());
         }
         catch(IllegalArgumentException e){

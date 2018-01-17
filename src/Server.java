@@ -135,11 +135,14 @@ public class Server{
         @Override
         public void handle(HttpExchange exchange) throws IOException{
 
+            System.out.println("They found me.");
+
             String response = null;
             MessageResponse errorMessage = null;
             LoginResponse successResponse = null;
 
             try {
+
                 LoginRequest request = decoder.toLoginRequest(getRequestBody(exchange));
                 successResponse = facade.login(request);
             }
@@ -161,6 +164,8 @@ public class Server{
             }
 
             exchange.sendResponseHeaders(HTTP_OK, 0);
+
+            System.out.println(response);
 
             sendResponseBody(exchange, response);
 
@@ -206,6 +211,7 @@ public class Server{
                 LoadRequest request = decoder.toLoadRequest(getRequestBody(exchange));
                 response = facade.load(request);
             }
+
             catch (JsonParseException e){
                 response = new MessageResponse("There was an error parsing the given JSON.");
             }
@@ -387,6 +393,8 @@ public class Server{
     	while (in.hasNextLine())
     	    sb.append(in.nextLine());
     	in.close();
+
+        System.out.println(sb);
 
         return sb.toString();
     }
